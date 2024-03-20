@@ -31,3 +31,7 @@ export 'package:daamn/models/user_model.dart';
 export 'package:daamn/screens/bottom_nav_bar/bottom_bar_view.dart';
 export 'package:firebase_auth/firebase_auth.dart';
 export 'package:google_sign_in/google_sign_in.dart';
+export 'package:daamn/providers/google_login_provider.dart';
+export 'package:daamn/widgets/app_divider.dart';
+export 'package:daamn/widgets/app_loading_container.dart';
+export 'package:daamn/widgets/cache_image.dart';

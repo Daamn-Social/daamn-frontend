@@ -1,6 +1,6 @@
-import 'package:daamn/providers/google_login_provider.dart';
 import 'package:daamn/providers/nearby_user.dart';
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:daamn/screens/profile/user_profile.dart';
 import '../../constant/exports.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -110,37 +110,45 @@ class _HomeScreenState extends State<HomeScreen> {
                           .top, //getRandonheight(h, i, nearByUser!.length),
                       left: usersLoationsList[i].left, // getRandomSize(w),
                       child: SizedBox(
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 2),
-                              decoration: BoxDecoration(
-                                  color: differentColors[i],
-                                  borderRadius: BorderRadius.circular(12)),
-                              child: appText(
-                                  textString: extractFirstName(
-                                      watchData.nearByUser![i].name),
-                                  fontSize: 10),
-                            ),
-                            verticalSpacer(space: 0.005),
-                            Container(
-                              // height: h * 0.9,
-                              width: w * 0.15, clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: transparent,
-                                  border: Border.all(
-                                      color: differentColors[i], width: 3)),
-                              child: Center(
-                                child: CircleAvatar(
-                                  radius: w * 0.07,
-                                  backgroundImage: NetworkImage(
-                                      watchData.nearByUser![i].image ?? ""),
+                        child: GestureDetector(
+                          onTap: () {
+                            AppNavigator.to(UserProfileScreen(
+                              friendID: watchData.nearByUser![i].userId!,
+                            ));
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 2),
+                                decoration: BoxDecoration(
+                                    color: differentColors[i],
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: appTextGiloryBlack(
+                                    textString: extractFirstName(
+                                        watchData.nearByUser![i].name),
+                                    fontSize: 10),
+                              ),
+                              verticalSpacer(space: 0.005),
+                              Container(
+                                // height: h * 0.9,
+                                width: w * 0.15, clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: transparent,
+                                    border: Border.all(
+                                        color: differentColors[i], width: 3)),
+                                child: Center(
+                                  child: CircleAvatar(
+                                    radius: w * 0.07,
+                                    backgroundImage: NetworkImage(
+                                        watchData.nearByUser![i].image ??
+                                            placeHolderNetwork),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       )),
                 if (watchData.nearByUser!.isEmpty) ...{
@@ -149,7 +157,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: SizedBox(
                           width: w,
                           child: Center(
-                              child: appText(textString: "No User Found"))))
+                              child: appTextGiloryBlack(
+                                  textString: "No User Found"))))
                 }
               ],
             ),

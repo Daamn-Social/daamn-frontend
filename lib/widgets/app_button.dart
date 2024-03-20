@@ -117,7 +117,7 @@ Widget appButtonwithText({
         height: 50,
         width: MediaQuery.of(context).size.width,
         child: Center(
-            child: appText(
+            child: appTextGiloryBlack(
                 color: bg == primaryColor ? Colors.white : Colors.black,
                 textString: txt,
                 fontSize: 16,

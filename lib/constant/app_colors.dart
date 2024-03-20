@@ -6,6 +6,7 @@ const Color appWhiteColor = Colors.white;
 const Color appBlackColor = Colors.black;
 const Color scafoldBg = Color(0xff4d477f);
 const Color transparent = Colors.transparent;
+Color dividerColor = const Color(0xffBE87FC).withOpacity(0.3);
 
 class TxtFieldColors {
   static const Color borderColor = Colors.black;

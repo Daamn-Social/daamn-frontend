@@ -38,16 +38,46 @@ class GoogleSignInProvider extends ChangeNotifier {
       final uid = userCredential.user?.uid;
       if (uid != null) {
         UserLocation? userloc = await getUserLocation();
-        await FirebaseFirestore.instance.collection('users').doc(uid).set({
-          'name': displayName,
-          'email': email,
-          'image': photoUrl,
-          'lat': userloc != null ? userloc.lat : 000000,
-          'lng': userloc != null ? userloc.lng : 000000,
-          'addres': userloc != null ? userloc.address : "Dummy",
-        });
-        DocumentSnapshot<Map<String, dynamic>> user =
-            await FirebaseFirestore.instance.collection('users').doc(uid).get();
+        DocumentSnapshot<Map<String, dynamic>> user;
+        if (await userExists(uid)) {
+          await FirebaseFirestore.instance.collection('users').doc(uid).update({
+            'lat': userloc != null ? userloc.lat : 000000,
+            'lng': userloc != null ? userloc.lng : 000000,
+            'addres': userloc != null ? userloc.address : "Dummy",
+          });
+          user = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .get();
+        } else {
+          await FirebaseFirestore.instance.collection('users').doc(uid).set({
+            'userId': uid,
+            'name': displayName,
+            'email': email,
+            'image': photoUrl,
+            'lat': userloc != null ? userloc.lat : 0.00020,
+            'lng': userloc != null ? userloc.lng : 0.00500,
+            'addres': userloc != null ? userloc.address : "Dummy",
+            'join_date': DateTime.now(),
+            'online_Status': "offline",
+            'last_seen': DateTime.now(),
+            'userBio': [],
+            'imagesList': [],
+            'interests': [],
+            'social_links': [
+              {
+                'youtube': "",
+                'instagram': "",
+                'snapchat': "",
+                'tictok': "",
+              }
+            ]
+          });
+          user = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .get();
+        }
 
         // Save user data to SharedPreferences
         final userModel = UserModel(
@@ -55,8 +85,8 @@ class GoogleSignInProvider extends ChangeNotifier {
           name: displayName ?? '',
           email: email,
           image: photoUrl ?? '',
-          lng: user['lat'], // Set default values for lng and lat
-          lat: user['lng'],
+          lat: user['lat'], // Set default values for lng and lat
+          lng: user['lng'],
           addres: user['addres'],
         );
         await saveUserData(userModel);
@@ -69,15 +99,22 @@ class GoogleSignInProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> userExists(String uid) async {
+    final doc =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    return doc.exists;
+  }
+
   Future<void> saveUserData(UserModel userModel) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('userId', FirebaseAuth.instance.currentUser!.uid);
     await prefs.setString('name', userModel.name);
     await prefs.setString('email', userModel.email);
-    await prefs.setString('image', userModel.image!);
+    await prefs.setString('image', userModel.image ?? '');
     await prefs.setDouble('lng', userModel.lng);
     await prefs.setDouble('lat', userModel.lat);
     await prefs.setString('address', userModel.addres);
+
     debugPrint("user data saved");
   }
 

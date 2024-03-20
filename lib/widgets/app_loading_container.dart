@@ -18,7 +18,7 @@ Widget appLoadingContainer(
       ),
       child: errorMessage != null
           ? Center(
-              child: appText(
+              child: appTextGiloryBlack(
                   textString: errorMessage,
                   fontweight: FontWeight.w600,
                   color: Colors.black,

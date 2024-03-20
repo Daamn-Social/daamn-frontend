@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           googleLogo,
                           scale: 18,
                         )),
-                        appText(
+                        appTextGiloryBlack(
                             textString: " Continue with google",
                             color: appBlackColor,
                             fontSize: 20,
@@ -95,7 +95,7 @@ profileItemWidget(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
                     color: clr, borderRadius: BorderRadius.circular(12)),
-                child: appText(textString: name),
+                child: appTextGiloryBlack(textString: name),
               ),
               verticalSpacer(space: 0.005),
               Container(
