@@ -1,9 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:daamn/constant/exports.dart';
+import 'package:daamn/screens/chat/chat_list.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({super.key});
 
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
@@ -18,57 +19,62 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
 
-    return Center(
-      child: Container(
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage(ellipseSetting), fit: BoxFit.cover)),
-        child: SizedBox(
-          height: h,
-          width: w * 0.9,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              verticalSpacer(space: 0.01),
-              appTextGiloryBlack(
-                  textString: 'Settings',
-                  fontSize: 42,
-                  fontweight: FontWeight.w400),
-              SizedBox(
-                child: appTextField(
-                  controler: _searchController,
-                  onchange: (value) {
-                    setState(() {
-                      _searchQuery = value.toLowerCase();
-                    });
-                  },
-                  hintText: "Search..",
-                  keyBordType: TextInputType.text,
-                  maxLiness: 1,
-                  sufixWidgit: Container(
-                    margin: const EdgeInsets.all(3),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: primaryColor,
-                    ),
-                    child: const Icon(
-                      Icons.search,
-                      color: appWhiteColor,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: appBlackColor,
+        body: Center(
+          child: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage(ellipseSetting), fit: BoxFit.cover)),
+            child: SizedBox(
+              height: h,
+              width: w * 0.9,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  verticalSpacer(space: 0.01),
+                  appTextGiloryBlack(
+                      textString: 'Settings',
+                      fontSize: 42,
+                      fontweight: FontWeight.w400),
+                  SizedBox(
+                    child: appTextField(
+                      controler: _searchController,
+                      onchange: (value) {
+                        setState(() {
+                          _searchQuery = value.toLowerCase();
+                        });
+                      },
+                      hintText: "Search..",
+                      keyBordType: TextInputType.text,
+                      maxLiness: 1,
+                      sufixWidgit: Container(
+                        margin: const EdgeInsets.all(3),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: primaryColor,
+                        ),
+                        child: const Icon(
+                          Icons.search,
+                          color: appWhiteColor,
+                        ),
+                      ),
+                      fieldvalivator: (value) => null,
                     ),
                   ),
-                  fieldvalivator: (value) => null,
-                ),
+                  verticalSpacer(space: 0.01),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: _filteredSettingsTiles(),
+                      ),
+                    ),
+                  )
+                ],
               ),
-              verticalSpacer(space: 0.01),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: _filteredSettingsTiles(),
-                  ),
-                ),
-              )
-            ],
+            ),
           ),
         ),
       ),
@@ -107,10 +113,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         verticalSpacer(space: 0.02),
         settingText(txt: 'Communication Settings'),
-        settingTile(
-          txt: "Chat",
-          ontap: () {},
-        ),
+        // settingTile(
+        //   txt: "Chat",
+        //   ontap: () {
+        //     AppNavigator.to(const ChatListScreen());
+        //   },
+        // ),
         settingTile(
           txt: "Blocked Users",
           ontap: () {},
@@ -167,7 +175,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       "Notifications",
       "Discovery Settings",
       "Connection Settings",
-      "Chat",
+      //"Chat",
       "Blocked Users",
       "Appearance",
       "Sound & Vibration",
@@ -180,7 +188,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return settings
         .where((setting) => setting.toLowerCase().contains(_searchQuery))
-        .map((setting) => settingTile(txt: setting, ontap: () {}))
+        .map((setting) => settingTile(
+            txt: setting,
+            ontap: () {
+              switch (setting) {
+                case "Chat":
+                  AppNavigator.to(const ChatListScreen());
+                  break;
+                case "Privacy":
+                  // Navigate to the privacy screen
+                  break;
+                // Add cases for other settings
+              }
+            }))
         .toList();
   }
 

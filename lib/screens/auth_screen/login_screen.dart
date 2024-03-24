@@ -1,4 +1,3 @@
-import 'package:daamn/providers/google_login_provider.dart';
 import '../../constant/exports.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -20,20 +19,11 @@ class _LoginScreenState extends State<LoginScreen> {
         height: h,
         width: w,
         decoration: const BoxDecoration(
-            image:
-                DecorationImage(image: AssetImage(splashImg), fit: BoxFit.cover)
-            // gradient: RadialGradient(
-            //   radius: h * 0.001,
-            //   colors: const [
-            //     Color(0xff4d477f),
-            //     Color(0xff0a0b0f),
-            //   ],
-            // ),
-            ),
+            image: DecorationImage(
+                image: AssetImage(splashImg), fit: BoxFit.cover)),
         child: Column(
           children: [
             verticalSpacer(space: 0.05),
-            SizedBox(width: w, child: Image.asset(appLogo)),
             const Spacer(),
             Center(
               child: Builder(builder: (context) {
@@ -57,11 +47,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           googleLogo,
                           scale: 18,
                         )),
-                        appTextGiloryBlack(
-                            textString: " Continue with google",
+                        appTextGiloryMedium(
+                            textString: "  Continue with google",
                             color: appBlackColor,
-                            fontSize: 20,
-                            fontweight: FontWeight.w500),
+                            fontSize: 18,
+                            fontweight: FontWeight.w600),
                       ],
                     ),
                   ),

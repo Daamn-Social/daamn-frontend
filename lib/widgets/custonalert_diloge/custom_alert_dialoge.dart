@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import '../spinkit/pouring_hour_glass_refined.dart';
+import 'package:daamn/constant/exports.dart';
 
 enum QuickAlertType {
   success,
@@ -52,8 +51,7 @@ class QuickAlert {
                 padding: const EdgeInsets.all(16.0),
                 child: type == QuickAlertType.loading
                     ? const Center(
-                        child:
-                            SpinKitPouringHourGlassRefined(color: Colors.white),
+                        child: SpinKitCircle(color: Colors.white),
                       )
                     : _getIcon(type, iconColor),
               ),

@@ -1,7 +1,7 @@
 import 'package:daamn/constant/exports.dart';
 
-Widget appDivider() {
+Widget appDivider({Color? colr}) {
   return Divider(
-    color: dividerColor,
+    color: colr ?? dividerColor,
   );
 }

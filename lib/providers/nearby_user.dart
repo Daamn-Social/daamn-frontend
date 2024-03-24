@@ -11,7 +11,7 @@ class NearByUserProvider extends ChangeNotifier {
 
 Future<List<UserModel>> getUsersNearby(double userLat, double userLng) async {
   List<UserModel> nearbyUsers = [];
-  double maxDistance = 10000.0; // Maximum distance in meters
+  double maxDistance = 100.0; // Maximum distance in meters
 
   // Get the current user's ID
   String currentUserId = FirebaseAuth.instance.currentUser!.uid;
@@ -35,8 +35,10 @@ Future<List<UserModel>> getUsersNearby(double userLat, double userLng) async {
     debugPrint(userSnapshot['name'] + " distance is : " + distance.toString());
     // If the distance is less than 10km, add the user to the nearbyUsers list
     if (distance <= maxDistance) {
-      nearbyUsers
-          .add(UserModel.fromJson(userSnapshot.data() as Map<String, dynamic>));
+      if (userSnapshot['online_Status'] == "Online") {
+        nearbyUsers.add(
+            UserModel.fromJson(userSnapshot.data() as Map<String, dynamic>));
+      }
     }
   }
 

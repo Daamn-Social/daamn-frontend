@@ -23,7 +23,7 @@ export 'package:daamn/widgets/app_snakbar.dart';
 export '../../constant/constant_functions.dart';
 export 'package:daamn/widgets/spinkit/pouring_hour_glass_refined.dart';
 export 'package:daamn/constant/api_urls.dart';
-export 'package:google_fonts/google_fonts.dart';
+//export 'package:google_fonts/google_fonts.dart';
 export 'package:daamn/providers/shared/bottom_nav_bar.dart';
 export 'package:daamn/screens/auth_screen/login_screen.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';

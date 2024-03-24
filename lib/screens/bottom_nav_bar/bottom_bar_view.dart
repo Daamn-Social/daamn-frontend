@@ -1,6 +1,6 @@
+import 'package:daamn/screens/chat/chat_list.dart';
 import 'package:daamn/screens/home/home_screen.dart';
 import 'package:daamn/screens/profile/my_profile.dart';
-import 'package:daamn/screens/settings/settings.dart';
 import '../../../constant/exports.dart';
 
 class BottomBArView extends StatefulWidget {
@@ -10,12 +10,36 @@ class BottomBArView extends StatefulWidget {
   State<BottomBArView> createState() => _BottomBArViewState();
 }
 
-class _BottomBArViewState extends State<BottomBArView> {
+class _BottomBArViewState extends State<BottomBArView>
+    with WidgetsBindingObserver {
   final pages = [
-    const SettingsScreen(),
+    //const SettingsScreen(),
+    const ChatListScreen(),
     const HomeScreen(),
     const ProfileScreen(),
   ];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    setStatus(status: 'Online');
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      setStatus(status: 'Online');
+    } else {
+      setStatus(status: 'Offline');
+    }
+  }
+
+  setStatus({required String status}) async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({'online_Status': status});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,16 +54,8 @@ class _BottomBArViewState extends State<BottomBArView> {
         extendBody: true,
         body: Container(
           decoration: const BoxDecoration(
-              image:
-                  DecorationImage(image: AssetImage(bgImage), fit: BoxFit.cover)
-              // gradient: RadialGradient(
-              //   radius: h * 0.001,
-              //   colors: const [
-              //     Color(0xff4d477f),
-              //     Color(0xff0a0b0f),
-              //   ],
-              // ),
-              ),
+              image: DecorationImage(
+                  image: AssetImage(bgImage), fit: BoxFit.cover)),
           child: Column(
             children: [
               SizedBox(height: h * 0.94, child: pages[mywatch.pageIndex]),
@@ -66,8 +82,8 @@ class _BottomBArViewState extends State<BottomBArView> {
                   width: 50,
                   child: Center(
                     child: ImageIcon(
-                      const AssetImage(
-                        nav1,
+                      AssetImage(
+                        messageicon,
                       ),
                       color: mywatch.pageIndex == 0
                           ? appWhiteColor

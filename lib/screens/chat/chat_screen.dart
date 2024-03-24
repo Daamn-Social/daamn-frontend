@@ -1,6 +1,7 @@
+// ignore_for_file: library_private_types_in_public_api, prefer_interpolation_to_compose_strings
+
 import 'dart:async';
 import 'package:daamn/constant/exports.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 
@@ -12,52 +13,20 @@ class ChatScreen extends StatefulWidget {
       {required this.userID,
       required this.userImage,
       required this.userName,
-      Key? key})
-      : super(key: key);
+      super.key});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final List<ChatMessage> _messages = [
-    ChatMessage(
-      text:
-          'Hello! How are you doing today? I hope everything is going well for you.',
-      isMe: false,
-      imageUrl: 'https://via.placeholder.com/150',
-      date: DateTime.now().subtract(const Duration(minutes: 1)),
-    ),
-    ChatMessage(
-      text: 'Hi there! I\'m doing great, thank you. How about you?',
-      isMe: true,
-      imageUrl: 'https://via.placeholder.com/150',
-      date: DateTime.now().subtract(const Duration(minutes: 10)),
-    ),
-    ChatMessage(
-      text:
-          'I\'m doing fine, just a bit tired from work. But I\'m looking forward to the weekend.',
-      isMe: false,
-      imageUrl: 'https://via.placeholder.com/150',
-      date: DateTime.now().subtract(const Duration(minutes: 15)),
-    ),
-    // Add more messages here
-  ];
-
   final TextEditingController _textController = TextEditingController();
-  // StreamController to manage the messages stream
-  final StreamController<List<ChatMessage>> _messagesStreamController =
-      StreamController<List<ChatMessage>>.broadcast();
-
-// Function to get the messages stream for a specific chatId
-  Stream<List<ChatMessage>> getMessagesStream(String chatId) {
-    return _messagesStreamController.stream;
-  }
 
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
+    String chatId = FirebaseAuth.instance.currentUser!.uid + widget.userID;
     return SafeArea(
       child: Scaffold(
         backgroundColor: appBlackColor,
@@ -71,89 +40,187 @@ class _ChatScreenState extends State<ChatScreen> {
           child: Column(
             children: [
               verticalSpacer(space: 0.01),
-              SizedBox(
-                child: Row(
-                  children: [
-                    horizontalSpacer(space: 0.02),
-                    IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.arrow_back_ios,
-                          color: appWhiteColor,
-                        )),
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(widget.userImage != ''
-                          ? widget.userImage
-                          : 'https://via.placeholder.com/150'),
+              StreamBuilder<DocumentSnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(widget.userID)
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return SizedBox(
+                      child: Row(
+                        children: [
+                          horizontalSpacer(space: 0.02),
+                          IconButton(
+                              onPressed: () {
+                                AppNavigator.off();
+                              },
+                              icon: const Icon(
+                                Icons.arrow_back_ios,
+                                color: appWhiteColor,
+                              )),
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(widget.userImage != ''
+                                ? widget.userImage
+                                : 'https://via.placeholder.com/150'),
+                          ),
+                          horizontalSpacer(space: 0.02),
+                          appTextGiloryBlack(
+                              textString: widget.userName, isCenter: false),
+                        ],
+                      ),
+                    );
+                  }
+
+                  if (!snapshot.hasData || !snapshot.data!.exists) {
+                    return SizedBox(
+                      child: Row(
+                        children: [
+                          horizontalSpacer(space: 0.02),
+                          IconButton(
+                              onPressed: () {
+                                AppNavigator.off();
+                              },
+                              icon: const Icon(
+                                Icons.arrow_back_ios,
+                                color: appWhiteColor,
+                              )),
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(widget.userImage != ''
+                                ? widget.userImage
+                                : 'https://via.placeholder.com/150'),
+                          ),
+                          horizontalSpacer(space: 0.02),
+                          appTextGiloryBlack(
+                              textString: widget.userName, isCenter: false),
+                        ],
+                      ),
+                    );
+                  }
+
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+
+                  return SizedBox(
+                    child: Row(
+                      children: [
+                        horizontalSpacer(space: 0.02),
+                        IconButton(
+                            onPressed: () {
+                              AppNavigator.off();
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back_ios,
+                              color: appWhiteColor,
+                            )),
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(widget.userImage != ''
+                              ? widget.userImage
+                              : 'https://via.placeholder.com/150'),
+                        ),
+                        horizontalSpacer(space: 0.02),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            appTextGiloryBlack(
+                                textString: snapshot.data!['name'],
+                                isCenter: false),
+                            appTextGiloryMedium(
+                                textString:
+                                    " " + snapshot.data!['online_Status'])
+                          ],
+                        ),
+                      ],
                     ),
-                    horizontalSpacer(space: 0.02),
-                    appTextGiloryBlack(
-                        textString: widget.userName, isCenter: false),
-                  ],
-                ),
+                  );
+                },
               ),
-              // Expanded(
-              //   child: SizedBox(
-              //       width: w * 0.9,
-              //     child: StreamBuilder<List<ChatMessage>>(
-              //         stream: getMessagesStream("chatId"),
-              //         builder: (context, snapshot) {
-              //           if (snapshot.connectionState == ConnectionState.waiting) {
-              //             return Center(child: CircularProgressIndicator());
-              //           }
-
-              //           if (snapshot.hasError) {
-              //             return Center(child: Text('Error: ${snapshot.error}'));
-              //           }
-
-              //           List<ChatMessage> messages = snapshot.data ?? [];
-
-              //           return SizedBox();
-              //         }),
-              //   ),
-              // ),
               Expanded(
                   child: SizedBox(
                 width: w * 0.9,
-                child: GroupedListView(
-                  order: GroupedListOrder.DESC,
-                  floatingHeader: true,
-                  useStickyGroupSeparators: true,
-                  elements: _messages,
-                  groupBy: (element) => DateTime(
-                      element.date.year, element.date.month, element.date.day),
-                  groupHeaderBuilder: (element) => SizedBox(
-                    height: 40,
-                    child: Center(
-                        child: Card(
-                      color: appWhiteColor,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: appTextGiloryMedium(
-                            textString: DateFormat.jm().format(element.date),
-                            color: Colors.black),
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                      .collection("chat")
+                      .doc(chatId)
+                      .collection('oneToOne')
+                      .orderBy('timestamp', descending: false)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      return const Center(
+                          child: Text(
+                        'Send message',
+                        style: TextStyle(color: appWhiteColor),
+                      ));
+                    }
+
+                    return GroupedListView(
+                      sort: true,
+                      reverse: true,
+                      order: GroupedListOrder.DESC,
+                      floatingHeader: true,
+                      useStickyGroupSeparators: true,
+                      elements: snapshot.data!.docs,
+                      groupBy: (element) => DateTime(
+                        element['timestamp'].toDate().year,
+                        element['timestamp'].toDate().month,
+                        element['timestamp'].toDate().day,
                       ),
-                    )),
-                  ),
-                  itemBuilder: (context, element) => Align(
-                    alignment: element.isMe
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
-                    child: SizedBox(
-                      width: w * 0.6,
-                      child: Card(
-                        color: Colors.white,
-                        elevation: 10,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: appTextGiloryMedium(
-                              isCenter: false,
-                              textString: element.text,
-                              color: Colors.black),
+                      groupHeaderBuilder: (element) => SizedBox(
+                        height: 40,
+                        child: Center(
+                            child: Card(
+                          surfaceTintColor: primaryColor,
+                          color: primaryColor,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: appTextGiloryMedium(
+                                textString: DateFormat.yMMMd()
+                                    .format(element['timestamp'].toDate()),
+                                color: Colors.white),
+                          ),
+                        )),
+                      ),
+                      itemBuilder: (context, element) => Align(
+                        alignment: element['senderId'] ==
+                                FirebaseAuth.instance.currentUser!.uid
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        child: SizedBox(
+                          //width: w * 0.6,
+                          child: Card(
+                            color: element['senderId'] !=
+                                    FirebaseAuth.instance.currentUser!.uid
+                                ? Colors.white
+                                : primaryColor,
+                            elevation: 10,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: appTextGiloryMedium(
+                                  isCenter: false,
+                                  textString: element['message'],
+                                  color: element['senderId'] ==
+                                          FirebaseAuth.instance.currentUser!.uid
+                                      ? appWhiteColor
+                                      : Colors.black),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
               )),
               _buildMessageInput(),
@@ -175,7 +242,7 @@ class _ChatScreenState extends State<ChatScreen> {
         maxLiness: 1,
         sufixWidgit: InkWell(
           onTap: () {
-            //  sendMessage("text");
+            sendMessage();
           },
           child: Container(
             margin: const EdgeInsets.all(3),
@@ -194,19 +261,69 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Future<void> sendMessage(String chatId) async {
+  Future<void> sendMessage() async {
+    FocusScope.of(context).unfocus();
+    String currentUserID = FirebaseAuth.instance.currentUser!.uid.toString();
+    String chatId = FirebaseAuth.instance.currentUser!.uid + widget.userID;
+    String chatIDForFriend = widget.userID + currentUserID;
+    String messageLast = _textController.text;
+    Map<String, dynamic> message = {
+      'senderId': currentUserID,
+      'receiverId': widget.userID,
+      'message': _textController.text,
+      'timestamp': DateTime.now(),
+      'type': 'text', // Default value
+      'image': ''
+    };
+    _textController.clear();
+    UserModel? userdataSaved =
+        await context.read<GoogleSignInProvider>().getUserData();
+    //----------------- savefor me
+    await FirebaseFirestore.instance
+        .collection('chatList')
+        .doc(currentUserID)
+        .collection('chat')
+        .doc(widget.userID)
+        .set({
+      'id': widget.userID,
+      'name': widget.userName,
+      'image': widget.userImage,
+      'lastMes': messageLast,
+      'unread_count': 0,
+      'time': DateTime.now(),
+    }).whenComplete(() => debugPrint(""));
     await FirebaseFirestore.instance
         .collection('users')
-        .doc("BkspV0dGUsStIhRZ30lcGWvRAmm2")
+        .doc(currentUserID)
         .collection('chat')
-        .doc("chatID")
+        .doc(chatId)
+        .collection('oneToOne')
+        .add(message)
+        .whenComplete(() => debugPrint(""));
+
+    //----------------- savefor friend
+
+    await FirebaseFirestore.instance
+        .collection('chatList')
+        .doc(widget.userID)
+        .collection('chat')
+        .doc(currentUserID)
         .set({
-      'senderId': "senderId",
-      'receiverId': "receiverId",
-      'message': "message",
-      'timestamp': "timestamp",
-      'deleted': false, // Default value
-    }).whenComplete(() => debugPrint("message sended"));
+      'id': currentUserID,
+      'name': userdataSaved!.name,
+      'image': userdataSaved.image,
+      'lastMes': messageLast,
+      'unread_count': 0,
+      'time': DateTime.now(),
+    }).whenComplete(() => debugPrint(""));
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userID)
+        .collection('chat')
+        .doc(chatIDForFriend)
+        .collection('oneToOne')
+        .add(message)
+        .whenComplete(() => debugPrint(""));
   }
 }
 

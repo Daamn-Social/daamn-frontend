@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:daamn/constant/exports.dart';
+import 'package:daamn/screens/settings/settings.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -52,20 +53,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
                         border: Border.all(color: primaryColor),
-                        // boxShadow: [
-                        //   // BoxShadow(
-                        //   //   color: primaryColor.withOpacity(0.5),
-                        //   //   spreadRadius: 15,
-                        //   //   blurRadius: 16,
-                        //   //   offset: Offset(3, 3), // changes position of shadow
-                        //   // ),
-                        // ],
                       ),
-                      child: userData!['image'] == null
-                          ? const Icon(Icons.account_circle)
-                          : appCacheNetworkImageWidget(
-                              imgIRL: userData!['image'],
-                            ),
+                      child: Stack(
+                        children: [
+                          SizedBox(
+                            width: w,
+                            height: h * 0.3,
+                            child: userData!['image'] == null
+                                ? const Icon(Icons.account_circle)
+                                : appCacheNetworkImageWidget(
+                                    imgIRL: userData!['image'],
+                                  ),
+                          ),
+                          Positioned(
+                              top: 10,
+                              right: 10,
+                              child: GestureDetector(
+                                onTap: () {
+                                  AppNavigator.to(const SettingsScreen());
+                                },
+                                child: const CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  child: ImageIcon(AssetImage(nav1)),
+                                ),
+                              ))
+                        ],
+                      ),
                     ),
                     verticalSpacer(space: 0.02),
                     SizedBox(
@@ -92,11 +105,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     appDivider(),
-                    appTextGiloryMedium(
-                        isCenter: false,
-                        textString: userData!['userBio'],
-                        fontSize: 16,
-                        fontweight: FontWeight.w400),
+                    userData!['userBio'] == ''
+                        ? SizedBox(
+                            width: w,
+                            height: 50,
+                            child: Center(
+                              child: appTextGiloryMedium(textString: "Add Bio"),
+                            ),
+                          )
+                        : appTextGiloryMedium(
+                            isCenter: false,
+                            textString: userData!['userBio'],
+                            fontSize: 16,
+                            fontweight: FontWeight.w400),
                     appDivider(),
                     appTextGiloryBlack(
                         textString:

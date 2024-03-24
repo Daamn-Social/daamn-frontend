@@ -12,8 +12,8 @@ class GoogleSignInProvider extends ChangeNotifier {
     QuickAlert.show(
         context: context,
         type: QuickAlertType.loading,
-        backgroundColor: primaryColor,
-        headerBackgroundColor: primaryColor);
+        backgroundColor: transparent,
+        headerBackgroundColor: transparent);
     try {
       final googleUser = await googleSignIn.signIn();
       if (googleUser == null) return;
@@ -61,7 +61,7 @@ class GoogleSignInProvider extends ChangeNotifier {
             'join_date': DateTime.now(),
             'online_Status': "offline",
             'last_seen': DateTime.now(),
-            'userBio': [],
+            'userBio': '',
             'imagesList': [],
             'interests': [],
             'social_links': [

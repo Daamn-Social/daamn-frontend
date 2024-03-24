@@ -38,9 +38,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ? Container(
               height: h,
               width: w,
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(elipces), fit: BoxFit.fill)),
+              // decoration: const BoxDecoration(
+              //     image: DecorationImage(
+              //         image: AssetImage(elipces), fit: BoxFit.fill)),
               child: Center(
                 child: AvatarGlow(
                   startDelay: const Duration(milliseconds: 1000),
@@ -66,13 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           : Stack(
               children: [
-                Container(
-                  height: h,
-                  width: w,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(elipces), fit: BoxFit.fill)),
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

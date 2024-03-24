@@ -127,11 +127,20 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             ),
                           ),
                           appDivider(),
-                          appTextGiloryMedium(
-                              isCenter: false,
-                              textString: userData!['userBio'],
-                              fontSize: 16,
-                              fontweight: FontWeight.w400),
+                          userData!['userBio'] == ''
+                              ? SizedBox(
+                                  width: w,
+                                  height: 50,
+                                  child: Center(
+                                    child: appTextGiloryMedium(
+                                        textString: "Not  Available"),
+                                  ),
+                                )
+                              : appTextGiloryMedium(
+                                  isCenter: false,
+                                  textString: userData!['userBio'],
+                                  fontSize: 16,
+                                  fontweight: FontWeight.w400),
                           appDivider(),
                           appTextGiloryBlack(
                               textString:
@@ -139,28 +148,40 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               fontSize: 18,
                               fontweight: FontWeight.w400),
                           verticalSpacer(space: 0.01),
-                          SizedBox(
-                            width: w,
-                            child: Wrap(
-                              spacing: 8.0, // spacing between each interest
-                              runSpacing:
-                                  8.0, // spacing between rows of interests
-                              children: List.generate(
-                                userData!['interests'].length,
-                                (index) => Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 8, horizontal: 12),
-                                  decoration: BoxDecoration(
-                                    color: primaryColor,
-                                    borderRadius: BorderRadius.circular(16),
+                          userData!['interests'].isEmpty
+                              ? SizedBox(
+                                  width: w,
+                                  height: 50,
+                                  child: Center(
+                                    child: appTextGiloryMedium(
+                                        textString: "Not  Available"),
                                   ),
-                                  child: appTextGiloryBlack(
-                                    textString: userData!['interests'][index],
+                                )
+                              : SizedBox(
+                                  width: w,
+                                  child: Wrap(
+                                    spacing:
+                                        8.0, // spacing between each interest
+                                    runSpacing:
+                                        8.0, // spacing between rows of interests
+                                    children: List.generate(
+                                      userData!['interests'].length,
+                                      (index) => Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8, horizontal: 12),
+                                        decoration: BoxDecoration(
+                                          color: primaryColor,
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                        child: appTextGiloryBlack(
+                                          textString: userData!['interests']
+                                              [index],
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
                           appDivider(),
                           Row(
                             children: [
@@ -181,30 +202,44 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             ],
                           ),
                           verticalSpacer(space: 0.01),
-                          SizedBox(
-                            width: w,
-                            child: Wrap(
-                              alignment: WrapAlignment.center,
-                              spacing: 8.0, // spacing between each interest
-                              runSpacing:
-                                  8.0, // spacing between rows of interests
-                              children: List.generate(
-                                userData!['imagesList'].length,
-                                (index) => Container(
-                                  width: w * 0.28,
-                                  height: h * 0.15,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: BoxDecoration(
-                                      color: primaryColor.withOpacity(0.3),
-                                      borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(color: primaryColor)),
-                                  child: appCacheNetworkImageWidget(
-                                    imgIRL: userData!['imagesList'][index],
+                          userData!['imagesList'].isEmpty
+                              ? SizedBox(
+                                  width: w,
+                                  height: 50,
+                                  child: Center(
+                                    child: appTextGiloryMedium(
+                                        textString: "No image"),
+                                  ),
+                                )
+                              : SizedBox(
+                                  width: w,
+                                  child: Wrap(
+                                    alignment: WrapAlignment.center,
+                                    spacing:
+                                        8.0, // spacing between each interest
+                                    runSpacing:
+                                        8.0, // spacing between rows of interests
+                                    children: List.generate(
+                                      userData!['imagesList'].length,
+                                      (index) => Container(
+                                        width: w * 0.28,
+                                        height: h * 0.15,
+                                        clipBehavior: Clip.antiAlias,
+                                        decoration: BoxDecoration(
+                                            color:
+                                                primaryColor.withOpacity(0.3),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            border: Border.all(
+                                                color: primaryColor)),
+                                        child: appCacheNetworkImageWidget(
+                                          imgIRL: userData!['imagesList']
+                                              [index],
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
                           verticalSpacer(space: 0.01),
                           appDivider(),
                           appTextGiloryBlack(

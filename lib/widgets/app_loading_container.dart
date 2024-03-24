@@ -25,7 +25,7 @@ Widget appLoadingContainer(
                   fontSize: 20),
             )
           : Center(
-              child: SpinKitPouringHourGlassRefined(
+              child: SpinKitCircle(
                 color: loaderColor ?? Colors.white,
               ),
             ),

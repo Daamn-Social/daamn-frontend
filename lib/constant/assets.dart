@@ -1,4 +1,6 @@
 //----------------app logo
+import 'package:daamn/constant/exports.dart';
+
 const String placeHolderNetwork = 'https://via.placeholder.com/150';
 const String appLogo = 'assets/logo/Logo.png';
 
@@ -44,3 +46,4 @@ String snapchat = 'assets/icon/social/1.png';
 String tictok = 'assets/icon/social/3.png';
 
 String messageicon = 'assets/icon/message.png';
+String threeDotsIcon = 'assets/icon/dots.png';
