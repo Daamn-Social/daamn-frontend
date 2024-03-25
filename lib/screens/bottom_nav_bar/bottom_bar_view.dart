@@ -1,6 +1,8 @@
+import 'package:daamn/models/user_location_model.dart';
 import 'package:daamn/screens/chat/chat_list.dart';
 import 'package:daamn/screens/home/home_screen.dart';
 import 'package:daamn/screens/profile/my_profile.dart';
+import 'package:daamn/services/userlocation_service.dart';
 import '../../../constant/exports.dart';
 
 class BottomBArView extends StatefulWidget {
@@ -21,8 +23,19 @@ class _BottomBArViewState extends State<BottomBArView>
   @override
   void initState() {
     super.initState();
+    updateLocation();
     WidgetsBinding.instance.addObserver(this);
     setStatus(status: 'Online');
+  }
+
+  updateLocation() async {
+    UserLocation? userloc = await getUserLocation();
+    if (userloc != null) {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({'lat': userloc.lat, 'lng': userloc.lng});
+    }
   }
 
   @override
@@ -31,6 +44,7 @@ class _BottomBArViewState extends State<BottomBArView>
       setStatus(status: 'Online');
     } else {
       setStatus(status: 'Offline');
+      setLastSeen();
     }
   }
 
@@ -40,6 +54,15 @@ class _BottomBArViewState extends State<BottomBArView>
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .update({'online_Status': status});
   }
+
+  setLastSeen() async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({'last_seen': DateTime.now()});
+  }
+
+  Future refresh() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -52,14 +75,17 @@ class _BottomBArViewState extends State<BottomBArView>
         resizeToAvoidBottomInset: false,
         backgroundColor: appBlackColor,
         extendBody: true,
-        body: Container(
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(bgImage), fit: BoxFit.cover)),
-          child: Column(
-            children: [
-              SizedBox(height: h * 0.94, child: pages[mywatch.pageIndex]),
-            ],
+        body: RefreshIndicator(
+          onRefresh: refresh,
+          child: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage(bgImage), fit: BoxFit.cover)),
+            child: Column(
+              children: [
+                SizedBox(height: h * 0.94, child: pages[mywatch.pageIndex]),
+              ],
+            ),
           ),
         ),
         bottomNavigationBar: Container(

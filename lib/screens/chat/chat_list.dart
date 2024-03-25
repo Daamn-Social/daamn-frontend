@@ -29,6 +29,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
       height: h,
       width: w,
       padding: const EdgeInsets.symmetric(horizontal: 0.05),
+      decoration: const BoxDecoration(
+          color: appBlackColor,
+          image: DecorationImage(
+              image: AssetImage(ellipseSetting), fit: BoxFit.cover)),
 
       child: Center(
         child: SizedBox(
@@ -66,7 +70,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
                 ),
               ),
               verticalSpacer(space: 0.015),
-              Image.asset('assets/image/chatimage.png'),
               Expanded(
                 child: SizedBox(
                   width: w * 0.9,
@@ -99,124 +102,495 @@ class _ChatListScreenState extends State<ChatListScreen> {
                         );
                       }
 
-                      return ListView.builder(
-                        itemCount: filteredChats.length,
-                        itemBuilder: (context, index) {
-                          var chatDocument = filteredChats[index];
-                          return Column(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  AppNavigator.to(ChatScreen(
-                                    userID: chatDocument['id'],
-                                    userName: chatDocument['name'],
-                                    userImage: chatDocument['image'] ??
-                                        placeHolderNetwork,
-                                  ));
-                                },
-                                child: Slidable(
-                                  // Specify a key if the Slidable is dismissible.
-                                  key: const ValueKey(0),
-
-                                  // The end action pane is the one at the right or the bottom side.
-                                  endActionPane: ActionPane(
-                                    motion: const ScrollMotion(),
-                                    children: [
-                                      SlidableAction(
-                                        onPressed: (context) {
-                                          showModalBottomSheet(
-                                            clipBehavior: Clip.antiAlias,
-                                            context: context,
-                                            shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(20),
-                                                topRight: Radius.circular(20),
-                                              ),
-                                            ),
-                                            builder: (BuildContext context) {
-                                              return CustomBottomSheet(
-                                                userID: chatDocument['id'],
-                                                userName: chatDocument['name'],
-                                                userImage:
-                                                    chatDocument['image'] ??
-                                                        placeHolderNetwork,
-                                              );
-                                            },
-                                          );
-                                        },
-                                        backgroundColor: primaryColor,
-                                        foregroundColor: Colors.white,
-                                        icon: iconDataThreedoots ?? Icons.more,
-                                        padding: const EdgeInsets.all(0),
-                                        label: 'More',
-                                      ),
-                                      SlidableAction(
-                                        onPressed: (context) {
-                                          deleteChat(
-                                            chatDocument['id'],
-                                          );
-                                        },
-                                        backgroundColor: Colors.red,
-                                        foregroundColor: Colors.white,
-                                        icon: Icons.delete,
-                                        padding: const EdgeInsets.all(0),
-                                        label: 'Delete',
-                                      ),
-                                    ],
-                                  ),
-
-                                  child: Row(children: [
-                                    CircleAvatar(
-                                      radius: 25,
-                                      backgroundImage:
-                                          NetworkImage(chatDocument['image']),
-                                    ),
-                                    horizontalSpacer(space: 0.02),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: w * 0.7,
-                                          child: Row(
-                                            children: [
-                                              appTextGiloryMedium(
-                                                  textString: extractFirstName(
-                                                      chatDocument['name']),
-                                                  fontSize: 22,
-                                                  fontweight: FontWeight.w400),
-                                              const Spacer(),
-                                              appTextGiloryMedium(
-                                                  textString:
-                                                      getTimeDifferenceString(
-                                                          chatDocument['time']),
-                                                  fontSize: 10,
-                                                  fontweight: FontWeight.w400),
-                                            ],
+                      return filteredChats.length < 6
+                          ? SizedBox(
+                              width: w,
+                              child: Wrap(
+                                spacing: 8.0, // spacing between each interest
+                                runSpacing:
+                                    8.0, // spacing between rows of interests
+                                children: List.generate(
+                                  filteredChats.length,
+                                  (index) => InkWell(
+                                    onTap: () {
+                                      AppNavigator.to(ChatScreen(
+                                        userID: filteredChats[index]['id'],
+                                        userName: filteredChats[index]['name'],
+                                        userImage: filteredChats[index]
+                                                ['image'] ??
+                                            placeHolderNetwork,
+                                      ));
+                                    },
+                                    onLongPress: () {
+                                      showModalBottomSheet(
+                                        clipBehavior: Clip.antiAlias,
+                                        context: context,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
                                           ),
                                         ),
-                                        SizedBox(
-                                          width: w * 0.7,
-                                          child: appTextGiloryMedium(
-                                              textString: getSubString(
-                                                  txt: chatDocument['lastMes'],
-                                                  lenght: 60),
-                                              fontSize: 12,
-                                              isCenter: false,
-                                              fontweight: FontWeight.w400),
+                                        builder: (BuildContext context) {
+                                          return CustomBottomSheet(
+                                            userID: filteredChats[index]['id'],
+                                            userName: filteredChats[index]
+                                                ['name'],
+                                            userImage: filteredChats[index]
+                                                    ['image'] ??
+                                                placeHolderNetwork,
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: SizedBox(
+                                      width: w * 0.28,
+                                      height: w * 0.33,
+                                      child: Stack(
+                                        children: [
+                                          Container(
+                                            width: w * 0.28,
+                                            height: w * 0.3,
+                                            clipBehavior: Clip.antiAlias,
+                                            decoration: BoxDecoration(
+                                                color: primaryColor
+                                                    .withOpacity(0.3),
+                                                borderRadius:
+                                                    BorderRadius.circular(12)),
+                                            child: appCacheNetworkImageWidget(
+                                              imgIRL: filteredChats[index]
+                                                      ['image'] ??
+                                                  placeHolderNetwork,
+                                            ),
+                                          ),
+                                          filteredChats[index]['lastMes'] == ''
+                                              ? const SizedBox()
+                                              : Positioned(
+                                                  bottom: 0,
+                                                  left: 8,
+                                                  child: Container(
+                                                    width: w * 0.23,
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8,
+                                                        vertical: 2),
+                                                    decoration: BoxDecoration(
+                                                        color: primaryColor,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12)),
+                                                    child: appTextGiloryBlack(
+                                                        textString: getSubString(
+                                                            txt: filteredChats[
+                                                                    index]
+                                                                ['lastMes'],
+                                                            lenght: 8),
+                                                        fontSize: 10),
+                                                  ),
+                                                )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    width: w,
+                                    child: Wrap(
+                                      spacing:
+                                          8.0, // spacing between each interest
+                                      runSpacing:
+                                          8.0, // spacing between rows of interests
+                                      children: List.generate(
+                                        6,
+                                        (index) => InkWell(
+                                          onTap: () {
+                                            AppNavigator.to(ChatScreen(
+                                              userID: filteredChats[index]
+                                                  ['id'],
+                                              userName: filteredChats[index]
+                                                  ['name'],
+                                              userImage: filteredChats[index]
+                                                      ['image'] ??
+                                                  placeHolderNetwork,
+                                            ));
+                                          },
+                                          onLongPress: () {
+                                            showModalBottomSheet(
+                                              clipBehavior: Clip.antiAlias,
+                                              context: context,
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(20),
+                                                  topRight: Radius.circular(20),
+                                                ),
+                                              ),
+                                              builder: (BuildContext context) {
+                                                return CustomBottomSheet(
+                                                  userID: filteredChats[index]
+                                                      ['id'],
+                                                  userName: filteredChats[index]
+                                                      ['name'],
+                                                  userImage:
+                                                      filteredChats[index]
+                                                              ['image'] ??
+                                                          placeHolderNetwork,
+                                                );
+                                              },
+                                            );
+                                          },
+                                          child: SizedBox(
+                                            width: w * 0.28,
+                                            height: w * 0.33,
+                                            child: Stack(
+                                              children: [
+                                                Container(
+                                                  width: w * 0.28,
+                                                  height: w * 0.3,
+                                                  clipBehavior: Clip.antiAlias,
+                                                  decoration: BoxDecoration(
+                                                      color: primaryColor
+                                                          .withOpacity(0.3),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12)),
+                                                  child:
+                                                      appCacheNetworkImageWidget(
+                                                    imgIRL: filteredChats[index]
+                                                            ['image'] ??
+                                                        placeHolderNetwork,
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  bottom: 0,
+                                                  left: 8,
+                                                  child: Container(
+                                                    width: w * 0.23,
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8,
+                                                        vertical: 2),
+                                                    decoration: BoxDecoration(
+                                                        color: primaryColor,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12)),
+                                                    child: appTextGiloryBlack(
+                                                        textString: getSubString(
+                                                            txt: filteredChats[
+                                                                    index]
+                                                                ['lastMes'],
+                                                            lenght: 8),
+                                                        fontSize: 10),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  for (int i = 6;
+                                      i < filteredChats.length;
+                                      i++) ...{
+                                    Column(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            AppNavigator.to(ChatScreen(
+                                              userID: filteredChats[i]['id'],
+                                              userName: filteredChats[i]
+                                                  ['name'],
+                                              userImage: filteredChats[i]
+                                                      ['image'] ??
+                                                  placeHolderNetwork,
+                                            ));
+                                          },
+                                          child: Slidable(
+                                            // Specify a key if the Slidable is dismissible.
+                                            key: const ValueKey(0),
+
+                                            // The end action pane is the one at the right or the bottom side.
+                                            endActionPane: ActionPane(
+                                              motion: const ScrollMotion(),
+                                              children: [
+                                                SlidableAction(
+                                                  onPressed: (context) {
+                                                    showModalBottomSheet(
+                                                      clipBehavior:
+                                                          Clip.antiAlias,
+                                                      context: context,
+                                                      shape:
+                                                          const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  20),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  20),
+                                                        ),
+                                                      ),
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return CustomBottomSheet(
+                                                          userID:
+                                                              filteredChats[i]
+                                                                  ['id'],
+                                                          userName:
+                                                              filteredChats[i]
+                                                                  ['name'],
+                                                          userImage: filteredChats[
+                                                                  i]['image'] ??
+                                                              placeHolderNetwork,
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                  backgroundColor: primaryColor,
+                                                  foregroundColor: Colors.white,
+                                                  icon: iconDataThreedoots ??
+                                                      Icons.more,
+                                                  padding:
+                                                      const EdgeInsets.all(0),
+                                                  label: 'More',
+                                                ),
+                                                SlidableAction(
+                                                  onPressed: (context) {
+                                                    deleteChat(
+                                                      filteredChats[i]['id'],
+                                                    );
+                                                  },
+                                                  backgroundColor: Colors.red,
+                                                  foregroundColor: Colors.white,
+                                                  icon: Icons.delete,
+                                                  padding:
+                                                      const EdgeInsets.all(0),
+                                                  label: 'Delete',
+                                                ),
+                                              ],
+                                            ),
+
+                                            child: Row(children: [
+                                              CircleAvatar(
+                                                radius: 25,
+                                                backgroundImage: NetworkImage(
+                                                    filteredChats[i]['image']),
+                                              ),
+                                              horizontalSpacer(space: 0.02),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  SizedBox(
+                                                    width: w * 0.7,
+                                                    child: Row(
+                                                      children: [
+                                                        appTextGiloryMedium(
+                                                            textString:
+                                                                extractFirstName(
+                                                                    filteredChats[
+                                                                            i][
+                                                                        'name']),
+                                                            fontSize: 22,
+                                                            fontweight:
+                                                                FontWeight
+                                                                    .w400),
+                                                        const Spacer(),
+                                                        appTextGiloryMedium(
+                                                            textString:
+                                                                getTimeDifferenceString(
+                                                                    filteredChats[
+                                                                            i][
+                                                                        'time']),
+                                                            fontSize: 10,
+                                                            fontweight:
+                                                                FontWeight
+                                                                    .w400),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: w * 0.7,
+                                                    child: appTextGiloryMedium(
+                                                        textString: getSubString(
+                                                            txt:
+                                                                filteredChats[i]
+                                                                    ['lastMes'],
+                                                            lenght: 60),
+                                                        fontSize: 12,
+                                                        isCenter: false,
+                                                        fontweight:
+                                                            FontWeight.w400),
+                                                  )
+                                                ],
+                                              )
+                                            ]),
+                                          ),
+                                        ),
+                                        const Divider(
+                                          color: primaryColor,
                                         )
                                       ],
                                     )
-                                  ]),
-                                ),
+                                  },
+
+                                  // ListView.builder(
+                                  //   itemCount: filteredChats.length,
+                                  //   itemBuilder: (context, index) {
+                                  //     var chatDocument = filteredChats[index];
+                                  //     return Column(
+                                  //       children: [
+                                  //         InkWell(
+                                  //           onTap: () {
+                                  //             AppNavigator.to(ChatScreen(
+                                  //               userID: chatDocument['id'],
+                                  //               userName: chatDocument['name'],
+                                  //               userImage:
+                                  //                   chatDocument['image'] ??
+                                  //                       placeHolderNetwork,
+                                  //             ));
+                                  //           },
+                                  //           child: Slidable(
+                                  //             // Specify a key if the Slidable is dismissible.
+                                  //             key: const ValueKey(0),
+
+                                  //             // The end action pane is the one at the right or the bottom side.
+                                  //             endActionPane: ActionPane(
+                                  //               motion: const ScrollMotion(),
+                                  //               children: [
+                                  //                 SlidableAction(
+                                  //                   onPressed: (context) {
+                                  //                     showModalBottomSheet(
+                                  //                       clipBehavior:
+                                  //                           Clip.antiAlias,
+                                  //                       context: context,
+                                  //                       shape:
+                                  //                           const RoundedRectangleBorder(
+                                  //                         borderRadius:
+                                  //                             BorderRadius.only(
+                                  //                           topLeft:
+                                  //                               Radius.circular(
+                                  //                                   20),
+                                  //                           topRight:
+                                  //                               Radius.circular(
+                                  //                                   20),
+                                  //                         ),
+                                  //                       ),
+                                  //                       builder: (BuildContext
+                                  //                           context) {
+                                  //                         return CustomBottomSheet(
+                                  //                           userID:
+                                  //                               chatDocument[
+                                  //                                   'id'],
+                                  //                           userName:
+                                  //                               chatDocument[
+                                  //                                   'name'],
+                                  //                           userImage: chatDocument[
+                                  //                                   'image'] ??
+                                  //                               placeHolderNetwork,
+                                  //                         );
+                                  //                       },
+                                  //                     );
+                                  //                   },
+                                  //                   backgroundColor:
+                                  //                       primaryColor,
+                                  //                   foregroundColor:
+                                  //                       Colors.white,
+                                  //                   icon: iconDataThreedoots ??
+                                  //                       Icons.more,
+                                  //                   padding:
+                                  //                       const EdgeInsets.all(0),
+                                  //                   label: 'More',
+                                  //                 ),
+                                  //                 SlidableAction(
+                                  //                   onPressed: (context) {
+                                  //                     deleteChat(
+                                  //                       chatDocument['id'],
+                                  //                     );
+                                  //                   },
+                                  //                   backgroundColor: Colors.red,
+                                  //                   foregroundColor:
+                                  //                       Colors.white,
+                                  //                   icon: Icons.delete,
+                                  //                   padding:
+                                  //                       const EdgeInsets.all(0),
+                                  //                   label: 'Delete',
+                                  //                 ),
+                                  //               ],
+                                  //             ),
+
+                                  //             child: Row(children: [
+                                  //               CircleAvatar(
+                                  //                 radius: 25,
+                                  //                 backgroundImage: NetworkImage(
+                                  //                     chatDocument['image']),
+                                  //               ),
+                                  //               horizontalSpacer(space: 0.02),
+                                  //               Column(
+                                  //                 crossAxisAlignment:
+                                  //                     CrossAxisAlignment.start,
+                                  //                 children: [
+                                  //                   SizedBox(
+                                  //                     width: w * 0.7,
+                                  //                     child: Row(
+                                  //                       children: [
+                                  //                         appTextGiloryMedium(
+                                  //                             textString:
+                                  //                                 extractFirstName(
+                                  //                                     chatDocument[
+                                  //                                         'name']),
+                                  //                             fontSize: 22,
+                                  //                             fontweight:
+                                  //                                 FontWeight
+                                  //                                     .w400),
+                                  //                         const Spacer(),
+                                  //                         appTextGiloryMedium(
+                                  //                             textString:
+                                  //                                 getTimeDifferenceString(
+                                  //                                     chatDocument[
+                                  //                                         'time']),
+                                  //                             fontSize: 10,
+                                  //                             fontweight:
+                                  //                                 FontWeight
+                                  //                                     .w400),
+                                  //                       ],
+                                  //                     ),
+                                  //                   ),
+                                  //                   SizedBox(
+                                  //                     width: w * 0.7,
+                                  //                     child: appTextGiloryMedium(
+                                  //                         textString: getSubString(
+                                  //                             txt: chatDocument[
+                                  //                                 'lastMes'],
+                                  //                             lenght: 60),
+                                  //                         fontSize: 12,
+                                  //                         isCenter: false,
+                                  //                         fontweight:
+                                  //                             FontWeight.w400),
+                                  //                   )
+                                  //                 ],
+                                  //               )
+                                  //             ]),
+                                  //           ),
+                                  //         ),
+                                  //         const Divider(
+                                  //           color: primaryColor,
+                                  //         )
+                                  //       ],
+                                  //     );
+                                  //   },
+                                  // )
+                                ],
                               ),
-                              const Divider(
-                                color: primaryColor,
-                              )
-                            ],
-                          );
-                        },
-                      );
+                            );
                     },
                   ),
                 ),

@@ -127,9 +127,15 @@ class _ChatScreenState extends State<ChatScreen> {
                             appTextGiloryBlack(
                                 textString: snapshot.data!['name'],
                                 isCenter: false),
-                            appTextGiloryMedium(
-                                textString:
-                                    " " + snapshot.data!['online_Status'])
+                            snapshot.data!['online_Status'] == 'Offline'
+                                ? appTextGiloryMedium(
+                                    textString: "Seen " +
+                                        getTimeDifferenceString(
+                                            snapshot.data!['last_seen']),
+                                    fontSize: 10)
+                                : appTextGiloryMedium(
+                                    textString: snapshot.data!['online_Status'],
+                                    fontSize: 10)
                           ],
                         ),
                       ],
