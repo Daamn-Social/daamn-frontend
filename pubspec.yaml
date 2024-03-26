@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.2.6 <4.0.0'
+  sdk: '>=3.2.2 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -38,7 +38,7 @@ dependencies:
   provider: ^6.1.2
   cached_network_image: ^3.3.1
   image_picker: ^1.0.7
-  google_fonts: 6.1.0
+  #google_fonts: ^6.2.0
   firebase_auth: ^4.17.8
   firebase_core: ^2.27.0
   firebase_storage: ^11.6.9
@@ -50,6 +50,12 @@ dependencies:
   geolocator: ^11.0.0
   permission_handler: ^11.3.0
   avatar_glow: ^3.0.1
+  carousel_slider: ^4.2.1
+  flutter_group_list_view: ^1.0.3
+  grouped_list: ^5.1.2
+  intl: ^0.19.0
+  flutter_dotenv: ^5.1.0
+  flutter_slidable: ^3.1.0
 
 dev_dependencies:
   flutter_test:
@@ -60,7 +66,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -80,6 +86,8 @@ flutter:
     - assets/image/profile/
     - assets/image/
     - assets/logo/
+    - assets/icon/social/
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -96,6 +104,9 @@ flutter:
     - family: GilroyBlack
       fonts:
         - asset: assets/fonts/GilroyBlack.ttf
+    - family: GilroyMedium
+      fonts:
+        - asset: assets/fonts/GilroyMedium.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

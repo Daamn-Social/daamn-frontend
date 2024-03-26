@@ -18,14 +18,14 @@ Widget appLoadingContainer(
       ),
       child: errorMessage != null
           ? Center(
-              child: appText(
+              child: appTextGiloryBlack(
                   textString: errorMessage,
                   fontweight: FontWeight.w600,
                   color: Colors.black,
                   fontSize: 20),
             )
           : Center(
-              child: SpinKitPouringHourGlassRefined(
+              child: SpinKitCircle(
                 color: loaderColor ?? Colors.white,
               ),
             ),

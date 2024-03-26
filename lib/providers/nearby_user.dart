@@ -28,15 +28,17 @@ Future<List<UserModel>> getUsersNearby(double userLat, double userLng) async {
     double distance = await calculateDistancee(
       userLat,
       userLng,
-      userSnapshot['lng'],
       userSnapshot['lat'],
+      userSnapshot['lng'],
     );
 
-    debugPrint(userSnapshot['name'] + " : " + distance.toString());
+    debugPrint(userSnapshot['name'] + " distance is : " + distance.toString());
     // If the distance is less than 10km, add the user to the nearbyUsers list
     if (distance <= maxDistance) {
-      nearbyUsers
-          .add(UserModel.fromJson(userSnapshot.data() as Map<String, dynamic>));
+      if (userSnapshot['online_Status'] == "Online") {
+        nearbyUsers.add(
+            UserModel.fromJson(userSnapshot.data() as Map<String, dynamic>));
+      }
     }
   }
 

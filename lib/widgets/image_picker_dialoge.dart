@@ -11,7 +11,7 @@ class ImageSelectionDialog extends StatelessWidget {
     return AlertDialog(
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.white,
-      title: appText(
+      title: appTextGiloryBlack(
           textString: 'Select Image',
           fontweight: FontWeight.bold,
           color: primaryColor,

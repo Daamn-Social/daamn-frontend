@@ -5,10 +5,10 @@ Widget appCacheNetworkImageWidget({required String imgIRL}) {
   return Builder(builder: (context) {
     return CachedNetworkImage(
       imageUrl: imgIRL,
-      fit: BoxFit.fill,
+      fit: BoxFit.cover,
       progressIndicatorBuilder: (context, url, downloadProgress) =>
-          const SpinKitPouringHourGlassRefined(
-        color: primaryColor,
+          const SpinKitCircle(
+        color: Colors.white,
       ),
       errorWidget: (context, url, error) => const Icon(Icons.error),
     );

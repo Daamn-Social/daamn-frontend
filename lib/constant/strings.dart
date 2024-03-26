@@ -79,3 +79,15 @@ List<UserScreenPositionclass> usersLoationsList = [
       left: MediaQuery.of(scaffoldMessengerKey.currentContext!).size.width *
           0.6), //10
 ];
+
+List<String> dummyInterests = [
+  'Technology',
+  'Sports',
+  'Music',
+  'Books',
+  'Travel',
+  'Food',
+  'Fitness',
+];
+String dummyUserBio =
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget semper quam. Vestibulum euismod mauris eu nisi vulputate, at volutpat libero vestibulum.';

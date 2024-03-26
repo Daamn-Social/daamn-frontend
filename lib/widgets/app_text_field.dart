@@ -34,10 +34,10 @@ Widget appTextField(
         hintText: hintText,
         // label: Text(hintText),
         hintStyle: TextStyle(
-            color: hintColor ?? Colors.black,
+            color: hintColor ?? Colors.grey,
             fontSize: 14,
             fontWeight: FontWeight.w300),
-        contentPadding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+        contentPadding: const EdgeInsets.fromLTRB(25, 5.0, 25, 5.0),
         filled: true,
         fillColor: removeBorder == true ? Colors.white : Colors.white,
         focusColor:
@@ -47,7 +47,7 @@ Widget appTextField(
         disabledBorder: OutlineInputBorder(
           borderSide:
               const BorderSide(color: TxtFieldColors.borderColor, width: 1.0),
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(25),
         ),
         border: OutlineInputBorder(
           borderSide: BorderSide(
@@ -55,7 +55,7 @@ Widget appTextField(
                   ? Colors.transparent
                   : TxtFieldColors.borderColor,
               width: 1.0),
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(25),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
@@ -63,7 +63,7 @@ Widget appTextField(
                   ? Colors.transparent
                   : TxtFieldColors.borderColor,
               width: 1.0),
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(25),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
@@ -71,7 +71,7 @@ Widget appTextField(
                   ? Colors.transparent
                   : TxtFieldColors.borderColor,
               width: 1.0),
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(25),
         ),
         errorBorder: OutlineInputBorder(
           borderSide: BorderSide(
@@ -79,7 +79,7 @@ Widget appTextField(
                   ? Colors.transparent
                   : TxtFieldColors.borderColor,
               width: 1.0),
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(25),
         )),
   );
 }
