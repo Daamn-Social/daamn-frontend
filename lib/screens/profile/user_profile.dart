@@ -42,8 +42,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         backgroundColor: appBlackColor,
         body: Container(
           decoration: const BoxDecoration(
-            image:
-                DecorationImage(image: AssetImage(bgImage), fit: BoxFit.cover),
+            image: DecorationImage(
+                image: AssetImage(ellipseSetting), fit: BoxFit.cover),
           ),
           child: Center(
             child: SizedBox(
@@ -171,6 +171,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                             vertical: 8, horizontal: 12),
                                         decoration: BoxDecoration(
                                           color: primaryColor,
+                                          gradient: primaryGradiant,
                                           borderRadius:
                                               BorderRadius.circular(16),
                                         ),
@@ -226,16 +227,23 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                         height: h * 0.15,
                                         clipBehavior: Clip.antiAlias,
                                         decoration: BoxDecoration(
+                                            gradient: primaryGradiant,
+                                            boxShadow: customShadow,
+                                            image: DecorationImage(
+                                                image: NetworkImage(
+                                                    userData!['imagesList']
+                                                        [index]),
+                                                fit: BoxFit.cover),
                                             color:
                                                 primaryColor.withOpacity(0.3),
                                             borderRadius:
                                                 BorderRadius.circular(8),
                                             border: Border.all(
                                                 color: primaryColor)),
-                                        child: appCacheNetworkImageWidget(
-                                          imgIRL: userData!['imagesList']
-                                              [index],
-                                        ),
+                                        // child: appCacheNetworkImageWidget(
+                                        //   imgIRL: userData!['imagesList']
+                                        //       [index],
+                                        // ),
                                       ),
                                     ),
                                   ),
@@ -252,7 +260,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               width: w,
                               child: Row(
                                 children: [
-                                  socialicon(icon: snapchat),
+                                  socialicon(
+                                    icon: snapchat,
+                                    ontap: () {},
+                                  ),
                                   socialicon(icon: instagram),
                                   socialicon(icon: tictok),
                                   socialicon(icon: youtube),
@@ -276,11 +287,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 }
 
-Widget socialicon({
-  required String icon,
-}) {
+Widget socialicon({required String icon, void Function()? ontap}) {
   return InkWell(
-    onTap: () {},
+    onTap: ontap,
     child: Container(
         width: 60,
         height: 60,

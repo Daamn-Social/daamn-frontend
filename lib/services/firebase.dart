@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:daamn/constant/exports.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 void clearOneToOneCollection(String userID) async {
   final user = FirebaseAuth.instance.currentUser;
@@ -50,4 +53,15 @@ void deleteChat(String userID) async {
   // Delete the "chat" collection for the specific user
   await chatDocRef.delete();
   clearOneToOneCollection(userID);
+}
+
+Future<String> uploadImage(File imageFile, String userId) async {
+  String fileExtension = imageFile.path.split('.').last;
+  Reference ref = FirebaseStorage.instance
+      .ref()
+      .child('chat_images')
+      .child('$userId${DateTime.now().millisecondsSinceEpoch}.$fileExtension');
+  UploadTask uploadTask = ref.putFile(imageFile);
+  TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+  return await taskSnapshot.ref.getDownloadURL();
 }

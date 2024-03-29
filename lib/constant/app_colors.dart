@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const Color primaryColor = Color(0xff733abb);
+const Color primaryColor = Color(0xff924BF4);
 
 const Color appWhiteColor = Colors.white;
 const Color appBlackColor = Colors.black;
@@ -35,4 +35,37 @@ List<Color> differentColors = [
   Colors.blueGrey,
   const Color(0xFF00FF00), // Custom color (Green)
   const Color(0xFF123456), // Custom color (Dark blue)
+];
+
+LinearGradient primaryGradiant = const LinearGradient(
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+  colors: [Color(0xff924BF4), Color(0xff400099)],
+);
+LinearGradient whiteGradiant = LinearGradient(
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+  colors: [appWhiteColor, appWhiteColor.withOpacity(0.8)],
+);
+LinearGradient blackGradiant = const LinearGradient(
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+  colors: [appBlackColor, appBlackColor, primaryColor],
+);
+
+List<BoxShadow> customShadow = [
+  BoxShadow(
+    color: primaryColor.withOpacity(0.4),
+    spreadRadius: 4,
+    blurRadius: 22,
+    offset: const Offset(0, 3), // changes position of shadow
+  ),
+];
+List<BoxShadow> customShadow2 = [
+  BoxShadow(
+    color: primaryColor.withOpacity(0.4),
+    spreadRadius: 20,
+    blurRadius: 220,
+    offset: const Offset(0, 3), // changes position of shadow
+  ),
 ];
