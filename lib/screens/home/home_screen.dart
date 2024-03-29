@@ -1,6 +1,7 @@
-import 'package:daamn/providers/nearby_user.dart';
-import 'package:avatar_glow/avatar_glow.dart';
+import 'dart:math';
+import 'package:daamn/screens/home/widget/avatar_glow.dart';
 import 'package:daamn/screens/profile/user_profile.dart';
+import 'package:daamn/screens/settings/settings.dart';
 import '../../constant/exports.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,186 +22,217 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getCurrentUserDatadata() async {
     userdata = await context.read<GoogleSignInProvider>().getUserData();
-    getdata();
-  }
-
-  getdata() async {
-    final readdata = context.read<NearByUserProvider>();
-    readdata.getUser(userLat: userdata!.lat, userLng: userdata!.lng);
-    await Future.delayed(const Duration(seconds: 1)); // Pause for 1 second
-
-    getdata();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
-    final watchData = context.watch<NearByUserProvider>();
+
     return userdata == null
-        ? Center(
-            child: AvatarGlow(
-              startDelay: const Duration(milliseconds: 1000),
-              glowColor: Colors.white,
-              glowShape: BoxShape.circle,
-              curve: Curves.fastOutSlowIn,
-              child: Container(
-                // height: h * 0.9,
-                width: w * 0.2, clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: transparent,
-                    border: Border.all(color: primaryColor, width: 3)),
-                child: Center(
-                  child: CircleAvatar(
-                    radius: w * 0.1,
+        ? avatarGlowWidget()
+        : Stack(
+            children: [
+              Center(
+                child: Container(
+                  width: w * 0.2,
+                  margin: EdgeInsets.only(top: h * 0.01),
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: transparent,
+                      border: Border.all(color: primaryColor, width: 3)),
+                  child: Center(
+                    child: CircleAvatar(
+                      radius: w * 0.1,
+                      backgroundImage:
+                          NetworkImage(userdata!.image ?? placeHolderNetwork),
+                    ),
                   ),
                 ),
               ),
-            ),
-          )
-        : SizedBox(
-            height: h,
-            width: w,
-            child: watchData.nearByUser == null
-                ? SizedBox(
-                    height: h,
-                    width: w,
-                    // decoration: const BoxDecoration(
-                    //     image: DecorationImage(
-                    //         image: AssetImage(elipces), fit: BoxFit.fill)),
-                    child: Center(
-                      child: AvatarGlow(
-                        startDelay: const Duration(milliseconds: 1000),
-                        glowColor: Colors.white,
-                        glowShape: BoxShape.circle,
-                        curve: Curves.fastOutSlowIn,
-                        child: Container(
-                          // height: h * 0.9,
-                          width: w * 0.2, clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: transparent,
-                              border:
-                                  Border.all(color: primaryColor, width: 3)),
-                          child: Center(
-                            child: CircleAvatar(
-                              radius: w * 0.1,
-                              backgroundImage: const AssetImage(p6),
-                            ),
-                          ),
-                        ),
-                      ),
+              Positioned(
+                  top: 10,
+                  right: 10,
+                  child: GestureDetector(
+                    onTap: () {
+                      AppNavigator.to(const SettingsScreen());
+                    },
+                    child: const CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: ImageIcon(AssetImage(nav1)),
                     ),
-                  )
-                : Stack(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            // height: h * 0.9,
-                            width: w * 0.2, clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: transparent,
-                                border:
-                                    Border.all(color: primaryColor, width: 3)),
-                            child: Center(
-                                child: userdata != null
-                                    ? userdata!.image == ""
-                                        ? CircleAvatar(
-                                            radius: w * 0.1,
-                                            child: const Icon(
-                                                Icons.person_2_outlined,
-                                                size: 33),
-                                          )
-                                        : CircleAvatar(
-                                            radius: w * 0.1,
-                                            backgroundImage:
-                                                NetworkImage(userdata!.image!),
-                                          )
-                                    : CircleAvatar(
-                                        radius: w * 0.1,
-                                        child: const Icon(
-                                            Icons.person_2_outlined,
-                                            size: 33),
-                                      )),
-                          ),
-                        ],
-                      ),
-                      for (int i = 0; i < watchData.nearByUser!.length; i++)
-                        Positioned(
-                            top: calculatePosition(
-                                    userdata!.lat,
-                                    userdata!.lng,
-                                    watchData.nearByUser![i].lat,
-                                    watchData.nearByUser![i].lng,
-                                    i)
-                                .dx,
-                            left: calculatePosition(
-                              userdata!.lat,
-                              userdata!.lng,
-                              watchData.nearByUser![i].lat,
-                              watchData.nearByUser![i].lng,
-                              i,
-                            ).dy, // getRandomSize(w),
-                            child: SizedBox(
-                              child: GestureDetector(
-                                onTap: () {
-                                  AppNavigator.to(UserProfileScreen(
-                                    friendID: watchData.nearByUser![i].userId!,
-                                  ));
-                                },
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 2),
-                                      decoration: BoxDecoration(
-                                          color: differentColors[i],
-                                          borderRadius:
-                                              BorderRadius.circular(12)),
-                                      child: appTextGiloryBlack(
-                                          textString: extractFirstName(
-                                              watchData.nearByUser![i].name),
-                                          fontSize: 10),
-                                    ),
-                                    verticalSpacer(space: 0.005),
-                                    Container(
-                                      // height: h * 0.9,
-                                      width: w * 0.15,
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: transparent,
-                                          border: Border.all(
-                                              color: differentColors[i],
-                                              width: 3)),
-                                      child: Center(
-                                        child: CircleAvatar(
-                                          radius: w * 0.07,
-                                          backgroundImage: NetworkImage(
-                                              watchData.nearByUser![i].image ??
-                                                  placeHolderNetwork),
+                  )),
+              SizedBox(
+                height: h,
+                width: w,
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('users')
+                      .where('online_Status', isEqualTo: "Online")
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return avatarGlowWidget(imgURl: userdata!.image);
+                    }
+                    if (snapshot.hasError) {
+                      return const Text('Something went wrong');
+                    }
+                    List<DocumentSnapshot> users = snapshot.data!.docs
+                        .where((user) =>
+                            user.id != userdata!.userId &&
+                            calculateDistance(userdata!.lat, userdata!.lng,
+                                    user['lat'], user['lng']) <
+                                100)
+                        .toList();
+
+                    users.sort((a, b) {
+                      double distanceA = calculateDistance(
+                          userdata!.lat, userdata!.lng, a['lat'], a['lng']);
+                      double distanceB = calculateDistance(
+                          userdata!.lat, userdata!.lng, b['lat'], b['lng']);
+
+                      return distanceA.compareTo(distanceB);
+                    });
+
+                    return users.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                verticalSpacer(space: 0.15),
+                                appTextGiloryMedium(
+                                    textString: "No User Available"),
+                              ],
+                            ),
+                          )
+                        : Stack(
+                            children: [
+                              for (int i = 0; i < users.length; i++) ...{
+                                Positioned(
+                                    top: getOffsetForUserPosition(
+                                            getUserPosition(
+                                              userdata!.lat,
+                                              userdata!.lng,
+                                              users[i]['lat'],
+                                              users[i]['lng'],
+                                            ),
+                                            i)
+                                        .dy,
+                                    left: getOffsetForUserPosition(
+                                            getUserPosition(
+                                              userdata!.lat,
+                                              userdata!.lng,
+                                              users[i]['lat'],
+                                              users[i]['lng'],
+                                            ),
+                                            i)
+                                        .dx,
+                                    child: SizedBox(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          AppNavigator.to(UserProfileScreen(
+                                            friendID: users[i].id,
+                                          ));
+                                        },
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8,
+                                                      vertical: 2),
+                                              decoration: BoxDecoration(
+                                                  color: differentColors[0],
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12)),
+                                              child: appTextGiloryBlack(
+                                                  textString: extractFirstName(
+                                                      users[i]['name']),
+                                                  fontSize: 10),
+                                            ),
+                                            verticalSpacer(space: 0.005),
+                                            Container(
+                                              // height: h * 0.9,
+                                              width: w * 0.15,
+                                              clipBehavior: Clip.antiAlias,
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: transparent,
+                                                  border: Border.all(
+                                                      color: differentColors[0],
+                                                      width: 3)),
+                                              child: Center(
+                                                child: CircleAvatar(
+                                                  radius: w * 0.07,
+                                                  backgroundImage: NetworkImage(
+                                                      users[i]['image'] ??
+                                                          placeHolderNetwork),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )),
-                      if (watchData.nearByUser!.isEmpty) ...{
-                        Positioned(
-                            top: h * 0.6,
-                            child: SizedBox(
-                                width: w,
-                                child: Center(
-                                    child: appTextGiloryBlack(
-                                        textString: "No User Found"))))
-                      }
-                    ],
-                  ),
+                                    )),
+                              }
+                            ],
+                          );
+                  },
+                ),
+              ),
+            ],
           );
   }
+}
+
+class ScreenPosition {
+  final double x;
+  final double y;
+
+  ScreenPosition(this.x, this.y);
+}
+
+ScreenPosition getScreenPosition(double myLat, double myLon, double friendLat,
+    double friendLon, double screenMaxX, double screenMaxY) {
+  const double earthRadius = 6371000; // in meters
+  const double degToRad = pi / 180.0;
+  const double offset = 10.0; // Offset to avoid overlapping
+
+  double dLat = (friendLat - myLat) * degToRad;
+  double dLon = (friendLon - myLon) * degToRad;
+
+  double a = sin(dLat / 2) * sin(dLat / 2) +
+      cos(myLat * degToRad) *
+          cos(friendLat * degToRad) *
+          sin(dLon / 2) *
+          sin(dLon / 2);
+  double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+  double distance = earthRadius * c;
+
+  double bearing = atan2(
+      sin(dLon) * cos(friendLat * degToRad),
+      cos(myLat * degToRad) * sin(friendLat * degToRad) -
+          sin(myLat * degToRad) * cos(friendLat * degToRad) * cos(dLon));
+
+  double angle = (bearing * 180.0 / pi + 360.0) % 360.0;
+
+  double maxDistance = earthRadius * pi;
+
+  double x = (distance * screenMaxX / maxDistance) * cos(angle * degToRad) +
+      screenMaxX / 2;
+  double y = (distance * screenMaxY / maxDistance) * sin(angle * degToRad) +
+      screenMaxY / 2;
+
+  // Check if the position overlaps with the current user
+  if (x == screenMaxX / 2 && y == screenMaxY / 2) {
+    x += offset; // Move the position to the right
+    y += offset; // Move the position down
+  }
+
+  return ScreenPosition(x, y);
 }

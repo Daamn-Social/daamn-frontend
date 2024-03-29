@@ -1,5 +1,11 @@
 import 'dart:math' as math;
 import 'package:daamn/constant/exports.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+final screenHieght =
+    MediaQuery.of(scaffoldMessengerKey.currentContext!).size.height;
+final screenWidth =
+    MediaQuery.of(scaffoldMessengerKey.currentContext!).size.width;
 
 getSubString({required String txt, required int lenght}) {
   if (txt.length > lenght) {
@@ -15,27 +21,6 @@ String extractFirstName(String fullName) {
     return names.first;
   }
   return '';
-}
-
-int sumOfNumericValues(String string1, String string2) {
-  int sum = 0;
-
-  // Regular expression to extract numeric values
-  RegExp regExp = RegExp(r'\d+');
-
-  // Extract numeric values from the first string
-  Iterable<Match> matches1 = regExp.allMatches(string1);
-  for (Match match in matches1) {
-    sum += int.parse(match.group(0)!);
-  }
-
-  // Extract numeric values from the second string
-  Iterable<Match> matches2 = regExp.allMatches(string2);
-  for (Match match in matches2) {
-    sum += int.parse(match.group(0)!);
-  }
-  print('Sum of numeric values: $sum');
-  return sum;
 }
 
 String getTimeDifferenceString(Timestamp timestamp) {
@@ -56,67 +41,6 @@ String getTimeDifferenceString(Timestamp timestamp) {
 
 List<Offset> friendPositions = [];
 
-Offset calculatePosition(double currentUserLat, double currentUserLon,
-    double friendLat, double friendLon, int index) {
-  double distance =
-      calculateDistance(currentUserLat, currentUserLon, friendLat, friendLon);
-  double angle =
-      math.atan2(friendLon - currentUserLon, friendLat - currentUserLat);
-
-  // Convert angle to degrees
-  double degrees = angle * 180 / math.pi;
-
-  // Adjust degrees to be between 0 and 360
-  if (degrees < 0) {
-    degrees += 360;
-  }
-
-  // Calculate position on the screen based on angle and distance
-  double radius = 100; // Distance from center of the screen
-  double centerX = 200; // X coordinate of the center of the screen
-  double centerY = 200; // Y coordinate of the center of the screen
-  double positionX = centerX + radius * math.cos(math.pi / 180 * degrees);
-  double positionY = centerY + radius * math.sin(math.pi / 180 * degrees);
-
-  // Adjust position to avoid overlap
-  Offset newPosition = Offset(positionX, positionY);
-  for (int i = 0; i < friendPositions.length; i++) {
-    if (i != index) {
-      double dx = newPosition.dx - friendPositions[i].dx;
-      double dy = newPosition.dy - friendPositions[i].dy;
-      double distanceSquared = dx * dx + dy * dy;
-      if (distanceSquared < 2500) {
-        // Adjust this value as needed for your app
-        // Overlapping, adjust the position
-        double newAngle =
-            (angle + 90 * (1)) % 360; // Adjust angle by 90 degrees
-        newPosition = Offset(
-          centerX + radius * math.cos(math.pi / 180 * newAngle),
-          centerY + radius * math.sin(math.pi / 180 * newAngle),
-        );
-        break; // No need to check further
-      }
-    }
-  }
-
-  // Update the list of friend positions
-  if (index >= friendPositions.length) {
-    friendPositions.add(newPosition);
-  } else {
-    friendPositions[index] = newPosition;
-  }
-
-  return newPosition;
-}
-
-// calculateDistancee(
-//     double myLat, double myLng, double otherLat, double otherLng) async {
-//   double distanceInMeters =
-//       Geolocator.distanceBetween(myLat, myLng, otherLat, otherLng);
-//   double distanceInKm = distanceInMeters; // Convert meters to kilometers
-//   return distanceInKm;
-// }
-
 double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
   const double earthRadius = 6371.0; // in kilometers
 
@@ -132,4 +56,90 @@ double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
 
   double distance = earthRadius * c;
   return distance;
+}
+
+void urlLauncherCustom(String myUrl) async {
+  // Check if the URL starts with 'http' or 'https'
+  if (!myUrl.startsWith('http://') && !myUrl.startsWith('https://')) {
+    // If not, add 'https://' at the beginning
+    myUrl = 'https://$myUrl';
+  }
+
+  final Uri _url = Uri.parse(myUrl);
+  if (!await launchUrl(_url)) {
+    snaki(msg: 'Could not launch $_url');
+    throw Exception('Could not launch $_url');
+  }
+}
+
+enum UserPosition {
+  Up,
+  Down,
+  Left,
+  Right,
+  TopLeft,
+  TopRight,
+  BottomLeft,
+  BottomRight,
+}
+
+UserPosition getUserPosition(
+    double user1Lat, double user1Lon, double user2Lat, double user2Lon) {
+  if (user1Lat == user2Lat && user1Lon == user2Lon) {
+    return UserPosition.Up; // Same position
+  }
+
+  if (user1Lat < user2Lat) {
+    if (user1Lon < user2Lon) {
+      return UserPosition.TopRight;
+    } else if (user1Lon > user2Lon) {
+      return UserPosition.TopLeft;
+    } else {
+      return UserPosition.Up;
+    }
+  } else if (user1Lat > user2Lat) {
+    if (user1Lon < user2Lon) {
+      return UserPosition.BottomRight;
+    } else if (user1Lon > user2Lon) {
+      return UserPosition.BottomLeft;
+    } else {
+      return UserPosition.Down;
+    }
+  } else {
+    if (user1Lon < user2Lon) {
+      return UserPosition.Right;
+    } else {
+      return UserPosition.Left;
+    }
+  }
+}
+
+Offset getOffsetForUserPosition(UserPosition position, int number) {
+  // print(number.toString() + position.toString());
+  switch (position) {
+    case UserPosition.Up:
+      return Offset(
+          (screenWidth * 0.42), (screenHieght * 0.3) + (number * -30));
+    case UserPosition.Down:
+      return Offset((screenWidth * 0.42), (screenHieght * 0.5) + (number * 30));
+    case UserPosition.Left:
+      return Offset(
+          (screenWidth * 0.25) + (number * -30), (screenHieght * 0.4));
+    case UserPosition.Right:
+      return Offset((screenWidth * 0.6) + (number * 30), (screenHieght * 0.4));
+    case UserPosition.TopLeft:
+      return Offset((screenWidth * 0.3) + (number * -30),
+          (screenHieght * 0.33) + (number * -30));
+    case UserPosition.TopRight:
+      return Offset((screenWidth * 0.53) + (number * 30),
+          (screenHieght * 0.33) + (number * -30));
+    case UserPosition.BottomLeft:
+      return Offset((screenWidth * 0.3) + (number * -30),
+          (screenHieght * 0.48) + (number * 30));
+    case UserPosition.BottomRight:
+      return Offset((screenWidth * 0.5) + (number * 30),
+          (screenHieght * 0.48) + (number * 30));
+    default:
+      return Offset.zero; // Default to no offset
+  }
 }

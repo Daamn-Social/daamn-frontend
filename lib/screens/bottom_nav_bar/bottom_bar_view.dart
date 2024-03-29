@@ -2,6 +2,7 @@ import 'package:daamn/models/user_location_model.dart';
 import 'package:daamn/screens/chat/chat_list.dart';
 import 'package:daamn/screens/home/home_screen.dart';
 import 'package:daamn/screens/profile/my_profile.dart';
+import 'package:daamn/services/notification_services.dart';
 import 'package:daamn/services/userlocation_service.dart';
 import '../../../constant/exports.dart';
 
@@ -23,6 +24,7 @@ class _BottomBArViewState extends State<BottomBArView>
   @override
   void initState() {
     super.initState();
+    NotificationService().requestNotificationPermission();
     updateLocation();
     WidgetsBinding.instance.addObserver(this);
     setStatus(status: 'Online');
