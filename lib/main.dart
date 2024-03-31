@@ -2,6 +2,7 @@ import 'package:daamn/constant/exports.dart';
 import 'package:daamn/firebase_options.dart';
 import 'package:daamn/providers/get_user_data.dart';
 import 'package:daamn/providers/shared/image_picker_provider.dart';
+import 'package:daamn/screens/chat/provider/chat_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
             create: (_) => GetUserDataProvider()),
         ChangeNotifierProvider<ImagePickerProvider>(
             create: (_) => ImagePickerProvider()),
+        ChangeNotifierProvider<ChatProvider>(create: (_) => ChatProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
