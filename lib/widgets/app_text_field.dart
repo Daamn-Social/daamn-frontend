@@ -16,8 +16,10 @@ Widget appTextField(
     bool securetext = false,
     required keyBordType,
     required maxLiness,
+    FocusNode? focusNode,
     required String? Function(dynamic value) fieldvalivator}) {
   return TextFormField(
+    focusNode: focusNode,
     style: const TextStyle(color: Colors.black),
     textInputAction: action ?? TextInputAction.done,
     obscureText: securetext,
