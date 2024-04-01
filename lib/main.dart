@@ -2,7 +2,8 @@ import 'package:daamn/constant/exports.dart';
 import 'package:daamn/firebase_options.dart';
 import 'package:daamn/providers/get_user_data.dart';
 import 'package:daamn/providers/shared/image_picker_provider.dart';
-import 'package:daamn/screens/chat/provider/chat_provider.dart';
+import 'package:daamn/providers/streams_provider.dart';
+import 'package:daamn/screens/bording_screens/bording_screen_01.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
             create: (_) => GetUserDataProvider()),
         ChangeNotifierProvider<ImagePickerProvider>(
             create: (_) => ImagePickerProvider()),
-        ChangeNotifierProvider<ChatProvider>(create: (_) => ChatProvider()),
+        ChangeNotifierProvider<DataStreamProvider>(
+            create: (_) => DataStreamProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -46,13 +48,9 @@ class MyApp extends StatelessWidget {
         theme:
             ThemeData(splashColor: primaryColor, colorSchemeSeed: primaryColor),
         title: 'Daamn',
-        home: Consumer<BottomNavBarProvider>(
-          builder: (context, userProvider, _) {
-            return FirebaseAuth.instance.currentUser != null
-                ? const BottomBArView()
-                : const LoginScreen();
-          },
-        ),
+        home: FirebaseAuth.instance.currentUser != null
+            ? const BordingScreen01() //BottomBArView()
+            : const LoginScreen(),
       ),
     );
   }

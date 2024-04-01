@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:daamn/constant/exports.dart';
+import 'package:daamn/providers/streams_provider.dart';
 import 'package:daamn/screens/profile/widgets/add_social_media.dart';
 import 'package:daamn/screens/profile/widgets/interest_dialoge.dart';
 import 'package:daamn/screens/profile/widgets/user_image_list.dart';
@@ -16,24 +17,16 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   Map<String, dynamic>? userData;
-  // List<dynamic>? bannerimages;
   @override
   void initState() {
-    getUserdata();
     super.initState();
+    initalizeStream();
   }
 
-  getUserdata() async {
-    UserModel? userdataSaved =
-        await context.read<GoogleSignInProvider>().getUserData();
-    DocumentSnapshot<Map<String, dynamic>>? user = await FirebaseFirestore
-        .instance
-        .collection('users')
-        .doc(userdataSaved!.userId)
-        .get();
-    userData = user.data();
-
-    setState(() {});
+  initalizeStream() {
+    Provider.of<DataStreamProvider>(context, listen: false)
+        .initializeCurrenTuserStream();
+    print("initaizing userDataSream");
   }
 
   @override
@@ -42,8 +35,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final w = MediaQuery.of(context).size.width;
 
     return Center(
-      child: Expanded(
-        child: Container(
+      child: Consumer<DataStreamProvider>(
+          builder: (context, DataStreamProvider, _) {
+        return Container(
           decoration: const BoxDecoration(
             color: appBlackColor,
             image: DecorationImage(
@@ -53,10 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // width: w,
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: StreamBuilder<DocumentSnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection('users')
-                .doc(FirebaseAuth.instance.currentUser!.uid)
-                .snapshots(),
+            stream: DataStreamProvider.currentUserStream,
             builder: (BuildContext context,
                 AsyncSnapshot<DocumentSnapshot> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -379,8 +370,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               );
             },
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

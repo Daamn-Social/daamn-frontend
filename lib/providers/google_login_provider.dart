@@ -1,5 +1,6 @@
 import 'package:daamn/constant/exports.dart';
 import 'package:daamn/models/user_location_model.dart';
+import 'package:daamn/screens/bording_screens/bording_screen_01.dart';
 import 'package:daamn/services/userlocation_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -95,7 +96,8 @@ class GoogleSignInProvider extends ChangeNotifier {
         );
         await saveUserData(userModel);
       }
-      AppNavigator.toReplacement(const BottomBArView());
+      // AppNavigator.toReplacement(const BottomBArView());
+      AppNavigator.toReplacement(const BordingScreen01());
       notifyListeners();
     } catch (e) {
       debugPrint(e.toString());

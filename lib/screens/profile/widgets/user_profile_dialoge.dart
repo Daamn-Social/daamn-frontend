@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:daamn/providers/shared/image_picker_provider.dart';
 import 'package:daamn/services/firebase.dart';
@@ -45,118 +46,166 @@ class _UserprofileDialogeState extends State<UserprofileDialoge> {
       ),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: primaryColor,
-          gradient: primaryGradiant,
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              watchmage.postimage != null
-                  ? GestureDetector(
-                      onTap: () {
-                        context.read<ImagePickerProvider>().custonImagePIcker(
-                            sourceimage: ImageSource.gallery);
-                      },
-                      child: Center(
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: FileImage(watchmage.postimage!),
-                                fit: BoxFit.cover),
-                            color: Colors.white,
-                            shape: BoxShape.circle,
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: Container(
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+            color: appBlackColor.withOpacity(0.4),
+            //gradient: primaryGradiant,
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  // height: 30,
+                  width: screenWidth,
+                  color: primaryColor,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      appTextGiloryBlack(
+                          textString: 'Edit Profile', fontSize: 24),
+                      CircleAvatar(
+                        child: IconButton(
+                            onPressed: () {
+                              AppNavigator.off();
+                            },
+                            icon: const Icon(
+                              Icons.close,
+                              color: primaryColor,
+                            )),
+                      )
+                    ],
+                  ),
+                ),
+                verticalSpacer(space: 0.02),
+                watchmage.postimage != null
+                    ? GestureDetector(
+                        onTap: () {
+                          context.read<ImagePickerProvider>().custonImagePIcker(
+                              sourceimage: ImageSource.gallery);
+                        },
+                        child: Center(
+                          child: Container(
+                            width: screenWidth * 0.28,
+                            height: screenHieght * 0.15,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                              gradient: primaryGradiant,
+                              boxShadow: customShadow,
+                              color: primaryColor.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: primaryColor),
+                              image: DecorationImage(
+                                  image: FileImage(watchmage.postimage!),
+                                  fit: BoxFit.cover),
+
+                              // shape: BoxShape.circle,
+                            ),
+                          ),
+                        ),
+                      )
+                    : GestureDetector(
+                        onTap: () {
+                          context.read<ImagePickerProvider>().custonImagePIcker(
+                              sourceimage: ImageSource.gallery);
+                        },
+                        child: Center(
+                          child: Container(
+                            width: screenWidth * 0.28,
+                            height: screenHieght * 0.15,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                                gradient: primaryGradiant,
+                                boxShadow: customShadow,
+                                color: primaryColor.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: primaryColor)
+
+                                ///shape: BoxShape.circle,
+                                ),
+                            child:
+                                appCacheNetworkImageWidget(imgIRL: widget.img!),
                           ),
                         ),
                       ),
-                    )
-                  : GestureDetector(
-                      onTap: () {
-                        context.read<ImagePickerProvider>().custonImagePIcker(
-                            sourceimage: ImageSource.gallery);
-                      },
-                      child: Center(
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          child:
-                              appCacheNetworkImageWidget(imgIRL: widget.img!),
-                        ),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      appTextGiloryMedium(
+                          textString: "Name",
+                          fontSize: 16,
+                          fontweight: FontWeight.w600),
+                      appTextField(
+                        controler: nameControler,
+                        onchange: (value) {},
+                        removeBorder: true,
+                        hintText: "Add Name",
+                        keyBordType: TextInputType.text,
+                        maxLiness: 1,
+                        fieldvalivator: (value) => null,
                       ),
-                    ),
-              appTextGiloryMedium(
-                  textString: "Name",
-                  fontSize: 16,
-                  fontweight: FontWeight.w600),
-              appTextField(
-                controler: nameControler,
-                onchange: (value) {},
-                removeBorder: true,
-                hintText: "Add Name",
-                keyBordType: TextInputType.text,
-                maxLiness: 1,
-                fieldvalivator: (value) => null,
-              ),
-              verticalSpacer(space: 0.02),
-              appTextGiloryMedium(
-                  textString: "Bio", fontSize: 16, fontweight: FontWeight.w600),
-              appTextField(
-                controler: bioControler,
-                onchange: (value) {},
-                removeBorder: true,
-                hintText: "Add Bio",
-                keyBordType: TextInputType.text,
-                maxLiness: 5,
-                fieldvalivator: (value) => null,
-              ),
-              verticalSpacer(space: 0.04),
-              appButton(
-                  buttonText: "Update",
-                  ontapfunction: () async {
-                    final readmage = context.read<ImagePickerProvider>();
-                    String useriD = FirebaseAuth.instance.currentUser!.uid;
-                    QuickAlert.show(
-                        context: context,
-                        type: QuickAlertType.loading,
-                        backgroundColor: transparent,
-                        headerBackgroundColor: transparent);
-                    File? selectedImage = readmage.postimage;
-                    String? imageUrl;
-                    if (selectedImage != null) {
-                      File imageFile = File(selectedImage.path);
-                      imageUrl = await uploadImage(imageFile, useriD);
-                    }
-                    await FirebaseFirestore.instance
-                        .collection("users")
-                        .doc(useriD)
-                        .update({
-                      'image': imageUrl ?? widget.img,
-                      'userBio': bioControler.text,
-                      'name': nameControler.text,
-                    }).whenComplete(() {
-                      AppNavigator.off();
-                      readmage.clean();
-                    }).onError((error, stackTrace) {
-                      snaki(msg: "Some thing rong Try again later");
-                    });
-                    AppNavigator.off();
-                  },
-                  buttonColor: Colors.white,
-                  textColor: appBlackColor)
-            ],
+                      verticalSpacer(space: 0.02),
+                      appTextGiloryMedium(
+                          textString: "Bio",
+                          fontSize: 16,
+                          fontweight: FontWeight.w600),
+                      appTextField(
+                        controler: bioControler,
+                        onchange: (value) {},
+                        removeBorder: true,
+                        hintText: "Add Bio",
+                        keyBordType: TextInputType.text,
+                        maxLiness: 5,
+                        fieldvalivator: (value) => null,
+                      ),
+                      verticalSpacer(space: 0.04),
+                      appButton(
+                        buttonText: "Save",
+                        fontSize: 22,
+                        ontapfunction: () async {
+                          final readmage = context.read<ImagePickerProvider>();
+                          String useriD =
+                              FirebaseAuth.instance.currentUser!.uid;
+                          QuickAlert.show(
+                              context: context,
+                              type: QuickAlertType.loading,
+                              backgroundColor: transparent,
+                              headerBackgroundColor: transparent);
+                          File? selectedImage = readmage.postimage;
+                          String? imageUrl;
+                          if (selectedImage != null) {
+                            File imageFile = File(selectedImage.path);
+                            imageUrl = await uploadImage(imageFile, useriD);
+                          }
+                          await FirebaseFirestore.instance
+                              .collection("users")
+                              .doc(useriD)
+                              .update({
+                            'image': imageUrl ?? widget.img,
+                            'userBio': bioControler.text,
+                            'name': nameControler.text,
+                          }).whenComplete(() {
+                            AppNavigator.off();
+                            readmage.clean();
+                          }).onError((error, stackTrace) {
+                            snaki(msg: "Some thing rong Try again later");
+                          });
+                          AppNavigator.off();
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

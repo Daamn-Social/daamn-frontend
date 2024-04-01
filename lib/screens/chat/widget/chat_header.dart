@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:daamn/constant/exports.dart';
-import 'package:daamn/screens/chat/provider/chat_provider.dart';
+import 'package:daamn/providers/streams_provider.dart';
 
 class ChatMainHeader extends StatelessWidget {
   final String userID;
@@ -17,7 +17,7 @@ class ChatMainHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ChatProvider>(
+    return Consumer<DataStreamProvider>(
       builder: (context, userProvider, _) {
         return StreamBuilder<DocumentSnapshot>(
           stream: userProvider.userStream,

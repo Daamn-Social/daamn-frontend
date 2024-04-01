@@ -35,3 +35,7 @@ export 'package:daamn/providers/google_login_provider.dart';
 export 'package:daamn/widgets/app_divider.dart';
 export 'package:daamn/widgets/app_loading_container.dart';
 export 'package:daamn/widgets/cache_image.dart';
+export 'package:daamn/screens/bording_screens/bording_screen_02.dart';
+export 'package:daamn/screens/bording_screens/widget/double_scafod.dart';
+export 'package:daamn/screens/bording_screens/bording_screen_03.dart';
+export 'package:daamn/screens/bording_screens/widget/chip_widget.dart';

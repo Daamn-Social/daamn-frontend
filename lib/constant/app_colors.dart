@@ -50,9 +50,19 @@ LinearGradient whiteGradiant = LinearGradient(
 LinearGradient blackGradiant = const LinearGradient(
   begin: Alignment.topCenter,
   end: Alignment.bottomCenter,
-  colors: [appBlackColor, appBlackColor, primaryColor],
+  colors: [Color.fromARGB(255, 24, 0, 58), primaryColor],
 );
 
+LinearGradient pinktoblack = const LinearGradient(
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+  colors: [Color(0xff6B00FF), appBlackColor],
+);
+LinearGradient blackandWhiteGradiant = const LinearGradient(
+  begin: Alignment.centerLeft,
+  end: Alignment.centerRight,
+  colors: [primaryColor, appWhiteColor, appWhiteColor],
+);
 List<BoxShadow> customShadow = [
   BoxShadow(
     color: primaryColor.withOpacity(0.4),

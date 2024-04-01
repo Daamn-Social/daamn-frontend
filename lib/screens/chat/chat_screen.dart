@@ -3,7 +3,7 @@
 import 'dart:async';
 import 'package:daamn/constant/exports.dart';
 import 'package:daamn/providers/shared/image_picker_provider.dart';
-import 'package:daamn/screens/chat/provider/chat_provider.dart';
+import 'package:daamn/providers/streams_provider.dart';
 import 'package:daamn/screens/chat/widget/chat_header.dart';
 import 'package:daamn/screens/chat/widget/hero_animation.dart';
 import 'package:daamn/services/firebase.dart';
@@ -40,9 +40,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
   initalizeChat() {
     String chatId = FirebaseAuth.instance.currentUser!.uid + widget.userID;
-    Provider.of<ChatProvider>(context, listen: false)
+    Provider.of<DataStreamProvider>(context, listen: false)
         .initializeChatStream(chatId);
-    Provider.of<ChatProvider>(context, listen: false)
+    Provider.of<DataStreamProvider>(context, listen: false)
         .initializeUserStream(widget.userID);
   }
 
@@ -70,13 +70,13 @@ class _ChatScreenState extends State<ChatScreen> {
               userName: widget.userName,
               userImage: widget.userImage,
             ),
-            Consumer<ChatProvider>(
-              builder: (context, chatProvider, _) {
+            Consumer<DataStreamProvider>(
+              builder: (context, DataStreamProvider, _) {
                 return Expanded(
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.9,
                     child: StreamBuilder<QuerySnapshot>(
-                      stream: chatProvider.chatStream,
+                      stream: DataStreamProvider.chatStream,
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -355,11 +355,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 sendMessage();
               },
               child: Container(
-                margin: const EdgeInsets.all(3),
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: primaryColor,
-                ),
+                margin: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: primaryColor,
+                    gradient: primaryGradiant),
                 child: const Icon(
                   Icons.send,
                   color: appWhiteColor,

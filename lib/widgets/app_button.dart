@@ -8,29 +8,38 @@ Widget appButton(
     double? radius,
     double? fontSize}) {
   return Builder(builder: (context) {
-    return ElevatedButton(
-      style: ButtonStyle(
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(radius ?? 25.0),
-          ),
-        ),
-        backgroundColor: buttonColor != null
-            ? MaterialStateProperty.all(buttonColor)
-            : MaterialStateProperty.all(
-                Colors.black,
-              ),
+    return Container(
+      padding: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        gradient: blackandWhiteGradiant,
+        boxShadow: customShadow,
+        // color: primaryColor.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(25),
       ),
-      onPressed: ontapfunction,
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: 50,
-        child: Center(
-          child: Text(
-            buttonText,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: textColor ?? Colors.white, fontSize: fontSize ?? 14),
+      child: ElevatedButton(
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(radius ?? 25.0),
+            ),
+          ),
+          backgroundColor: buttonColor != null
+              ? MaterialStateProperty.all(buttonColor)
+              : MaterialStateProperty.all(
+                  primaryColor,
+                ),
+        ),
+        onPressed: ontapfunction,
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: 50,
+          child: Center(
+            child: Text(
+              buttonText,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: textColor ?? appWhiteColor, fontSize: fontSize ?? 14),
+            ),
           ),
         ),
       ),
