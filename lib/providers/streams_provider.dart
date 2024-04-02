@@ -1,10 +1,18 @@
 import 'package:daamn/constant/exports.dart';
 
 class DataStreamProvider extends ChangeNotifier {
+  int selectedAnswer = 0;
+
+  updateSelectedAnswer(int val) {
+    selectedAnswer = val;
+    notifyListeners();
+  }
+
   late Stream<QuerySnapshot> chatStream;
   late Stream<DocumentSnapshot> userStream;
   late Stream<DocumentSnapshot> currentUserStream;
-
+  DocumentSnapshot<Map<String, dynamic>>? currentUserData;
+  QuerySnapshot? bordingDataScreen;
   void initializeChatStream(String chatId) {
     chatStream = getChatStream(chatId);
     ChangeNotifier();
@@ -18,6 +26,32 @@ class DataStreamProvider extends ChangeNotifier {
   void initializeCurrenTuserStream() {
     currentUserStream = getCurrentUserStream();
     ChangeNotifier();
+  }
+
+  getBordingData() async {
+    getSurrentUserdata();
+    bordingDataScreen = await FirebaseFirestore.instance
+        .collection('bording')
+        .orderBy('id', descending: false)
+        .get();
+
+    notifyListeners();
+  }
+
+  getSurrentUserdata() async {
+    currentUserData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    notifyListeners();
+  }
+
+  addUserInterest({required String interstTxt}) async {
+    List<dynamic> userIntrestsss = currentUserData!['interests'];
+    userIntrestsss.add(interstTxt);
+    updateUserData(data: {'interests': userIntrestsss});
+    getSurrentUserdata();
+    notifyListeners();
   }
 }
 
@@ -47,4 +81,11 @@ Stream<DocumentSnapshot<Map<String, dynamic>>> getCurrentUserStream() {
       .doc(FirebaseAuth.instance.currentUser?.uid)
       .snapshots();
   return userStream;
+}
+
+updateUserData({required Map<Object, Object?> data}) {
+  FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser?.uid)
+      .update(data);
 }

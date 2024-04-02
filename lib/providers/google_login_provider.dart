@@ -1,15 +1,11 @@
 import 'package:daamn/constant/exports.dart';
 import 'package:daamn/models/user_location_model.dart';
-import 'package:daamn/screens/bording_screens/bording_screen_01.dart';
+import 'package:daamn/screens/bording_screens/main_bording.dart';
 import 'package:daamn/services/userlocation_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GoogleSignInProvider extends ChangeNotifier {
-  final googleSignIn = GoogleSignIn(
-      // // The OAuth client id of your app. This is required.
-      // clientId:
-      //     '1026215659783-7kkf3j4gv5g2m4pbt608n40q439esikp.apps.googleusercontent.com',
-      );
+  final googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _user;
   GoogleSignInAccount get user => _user!;
 
@@ -67,16 +63,10 @@ class GoogleSignInProvider extends ChangeNotifier {
             'online_Status': "offline",
             'last_seen': DateTime.now(),
             'userBio': '',
+            'isBordingCompleted': false,
             'imagesList': [],
             'interests': [],
-            'social_links': [
-              {
-                'youtube': "",
-                'instagram': "",
-                'snapchat': "",
-                'tictok': "",
-              }
-            ]
+            'social_links': []
           });
           user = await FirebaseFirestore.instance
               .collection('users')
@@ -97,7 +87,7 @@ class GoogleSignInProvider extends ChangeNotifier {
         await saveUserData(userModel);
       }
       // AppNavigator.toReplacement(const BottomBArView());
-      AppNavigator.toReplacement(const BordingScreen01());
+      AppNavigator.toReplacement(const MainBordingScreen());
       notifyListeners();
     } catch (e) {
       debugPrint(e.toString());

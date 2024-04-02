@@ -1,59 +1,97 @@
 import 'package:daamn/constant/exports.dart';
+import 'package:daamn/providers/streams_provider.dart';
 
 class BordingScreen02 extends StatefulWidget {
-  const BordingScreen02({super.key});
+  final String videoURL;
+  final String question;
+  final List<dynamic> answers;
+  final int len;
+  final void Function()? onNext;
+  const BordingScreen02(
+      {required this.videoURL,
+      required this.question,
+      required this.answers,
+      required this.len,
+      required this.onNext,
+      super.key});
 
   @override
   State<BordingScreen02> createState() => _BordingScreen02State();
 }
 
 class _BordingScreen02State extends State<BordingScreen02> {
-  int selectedItem = 1;
-  updateSelected(int value) {
-    setState(() {
-      selectedItem = value;
-    });
-    AppNavigator.to(const BordingScreen03());
-  }
-
   @override
   Widget build(BuildContext context) {
+    final watchData = context.watch<DataStreamProvider>();
+
     return DoubleScafold(
-      videoUrl:
-          'https://firebasestorage.googleapis.com/v0/b/daamn-28e40.appspot.com/o/bording%2F2%20identify.mp4?alt=media&token=c4636c59-96a6-4367-91bb-42101561e53e',
+      videoUrl: widget.videoURL,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+        //   mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          appTextGiloryBlack(
-              isCenter: false, textString: 'How do you identify', fontSize: 22),
-          verticalSpacer(space: 0.01),
+          verticalSpacer(space: 0.04),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              chipContainer(
-                tittle: "Male",
-                isSelected: selectedItem == 0 ? true : false,
-                ontap: () {
-                  updateSelected(0);
-                },
-              ),
-              chipContainer(
-                tittle: "Male",
-                isSelected: selectedItem == 1 ? true : false,
-                ontap: () {
-                  updateSelected(1);
-                },
-              ),
-              chipContainer(
-                tittle: "Other",
-                isSelected: selectedItem == 2 ? true : false,
-                ontap: () {
-                  updateSelected(2);
-                },
+              CircleAvatar(
+                backgroundColor: primaryColor,
+                child: IconButton(
+                    onPressed: widget.onNext,
+                    icon: const Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.white,
+                    )),
               )
             ],
           ),
+          const Spacer(),
+          appTextGiloryBlack(
+              isCenter: false, textString: widget.question, fontSize: 22),
+          verticalSpacer(space: 0.01),
+          if (widget.len >= 30) ...{
+            SizedBox(
+              width: screenWidth,
+              height: screenHieght * 0.25,
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: (widget.answers.length),
+                itemBuilder: (context, index) {
+                  return SizedBox(
+                    width: screenWidth * 0.9,
+                    child: chipContainer(
+                      tittle: widget.answers[index],
+                      isSelected:
+                          watchData.selectedAnswer == index ? true : false,
+                      ontap: () {
+                        context
+                            .read<DataStreamProvider>()
+                            .updateSelectedAnswer(index);
+                      },
+                    ),
+                  );
+                },
+              ),
+            )
+          } else ...{
+            Center(
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  for (int i = 0; i < widget.answers.length; i++)
+                    chipContainer(
+                      tittle: widget.answers[i],
+                      isSelected: watchData.selectedAnswer == i ? true : false,
+                      ontap: () {
+                        context
+                            .read<DataStreamProvider>()
+                            .updateSelectedAnswer(i);
+                      },
+                    ),
+                ],
+              ),
+            ),
+          },
           verticalSpacer(space: 0.01),
         ],
       ),

@@ -15,7 +15,7 @@ Widget chipContainer(
                 borderRadius: BorderRadius.circular(25)),
             child: appTextGiloryMedium(
               textString: tittle,
-              fontSize: 20,
+              fontSize: 16,
             ),
           )
         : Container(
@@ -30,7 +30,7 @@ Widget chipContainer(
                   borderRadius: BorderRadius.circular(25)),
               child: appTextGiloryMedium(
                 textString: tittle,
-                fontSize: 20,
+                fontSize: 16,
               ),
             ),
           ),

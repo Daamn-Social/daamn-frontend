@@ -42,7 +42,6 @@ Future<void> _deleteCollection(CollectionReference collectionRef) async {
 void deleteChat(String userID) async {
   final user = FirebaseAuth.instance.currentUser;
   if (user == null) {
-    print("User not logged in");
     return;
   }
 

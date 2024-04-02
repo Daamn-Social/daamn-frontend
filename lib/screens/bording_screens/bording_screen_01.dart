@@ -1,41 +1,50 @@
 import 'package:daamn/constant/exports.dart';
-import 'package:daamn/screens/bording_screens/bording_screen_02.dart';
-import 'package:daamn/screens/bording_screens/widget/double_scafod.dart';
 
 class BordingScreen01 extends StatefulWidget {
-  const BordingScreen01({super.key});
+  final String videoURL;
+  final String question;
+  final String hint;
+  final TextEditingController myControler;
+  final void Function()? onSubmit;
+  const BordingScreen01(
+      {required this.videoURL,
+      required this.question,
+      required this.hint,
+      required this.onSubmit,
+      required this.myControler,
+      super.key});
 
   @override
   State<BordingScreen01> createState() => _BordingScreen01State();
 }
 
 class _BordingScreen01State extends State<BordingScreen01> {
-  final TextEditingController textController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+
+    widget.myControler.text = widget.hint;
+  }
+
   @override
   Widget build(BuildContext context) {
     return DoubleScafold(
-      videoUrl:
-          'https://firebasestorage.googleapis.com/v0/b/daamn-28e40.appspot.com/o/bording%2F1%20name.mp4?alt=media&token=2bdaf952-f7f9-45a9-ab9f-158fc7b63442',
+      videoUrl: widget.videoURL,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           appTextGiloryBlack(
-              isCenter: false,
-              textString:
-                  'Let’s start with something simple, what’s your name?',
-              fontSize: 22),
+              isCenter: false, textString: widget.question, fontSize: 22),
           verticalSpacer(space: 0.01),
           appTextField(
-            controler: textController,
+            controler: widget.myControler,
             removeBorder: true,
             onchange: (value) {},
-            hintText: "Your message..",
+            hintText: widget.hint,
             keyBordType: TextInputType.text,
             maxLiness: 1,
             sufixWidgit: InkWell(
-              onTap: () {
-                AppNavigator.to(const BordingScreen02());
-              },
+              onTap: widget.onSubmit,
               child: Container(
                 margin: const EdgeInsets.all(4),
                 decoration: BoxDecoration(

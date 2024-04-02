@@ -1,21 +1,22 @@
+import 'package:daamn/providers/streams_provider.dart';
+
 import '../../../constant/exports.dart';
+import 'dart:ui';
 
 class SocialMediaDialoge extends StatefulWidget {
-  final Map<String, dynamic> socalMeia;
+  final List<dynamic> selected;
   const SocialMediaDialoge({
-    required this.socalMeia,
+    required this.selected,
     super.key,
   });
 
   @override
-  State<SocialMediaDialoge> createState() => _SocialMediaDialogeState();
+  State<SocialMediaDialoge> createState() => _UserprofileDialogeState();
 }
 
-class _SocialMediaDialogeState extends State<SocialMediaDialoge> {
-  TextEditingController instgramControler = TextEditingController();
-  TextEditingController snapControler = TextEditingController();
-  TextEditingController tictokControler = TextEditingController();
-  TextEditingController youtubeControler = TextEditingController();
+class _UserprofileDialogeState extends State<SocialMediaDialoge> {
+  TextEditingController nameControler = TextEditingController();
+  TextEditingController bioControler = TextEditingController();
 
   @override
   void initState() {
@@ -23,124 +24,344 @@ class _SocialMediaDialogeState extends State<SocialMediaDialoge> {
     super.initState();
   }
 
+  List<dynamic> selectedIcons = [];
+
   asignData() {
-    instgramControler.text = widget.socalMeia['instagram'];
-    youtubeControler.text = widget.socalMeia['youtube'];
-    snapControler.text = widget.socalMeia['snapchat'];
-    tictokControler.text = widget.socalMeia['tictok'];
+    selectedIcons = widget.selected;
   }
 
   @override
   Widget build(BuildContext context) {
+    //  final watchmage = context.watch<ImagePickerProvider>();
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
       ),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: primaryColor,
-          gradient: primaryGradiant,
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        child: SingleChildScrollView(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: Container(
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+            color: appBlackColor.withOpacity(0.4),
+            //gradient: primaryGradiant,
+            borderRadius: BorderRadius.circular(16.0),
+          ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
             children: [
-              Center(
-                child: appTextGiloryMedium(
-                    textString: "Social media",
-                    fontSize: 22,
-                    fontweight: FontWeight.w600),
-              ),
-              appTextGiloryMedium(
-                  textString: "Instagram",
-                  fontSize: 16,
-                  fontweight: FontWeight.w600),
-              appTextField(
-                controler: instgramControler,
-                onchange: (value) {},
-                removeBorder: true,
-                hintText: "Add intsgram profile link",
-                keyBordType: TextInputType.text,
-                maxLiness: 1,
-                fieldvalivator: (value) => null,
-              ),
-              verticalSpacer(space: 0.02),
-              appTextGiloryMedium(
-                  textString: "SnapChat",
-                  fontSize: 16,
-                  fontweight: FontWeight.w600),
-              appTextField(
-                controler: snapControler,
-                onchange: (value) {},
-                removeBorder: true,
-                hintText: "Add Snapchat profile link",
-                keyBordType: TextInputType.text,
-                maxLiness: 1,
-                fieldvalivator: (value) => null,
+              Container(
+                padding: const EdgeInsets.all(10),
+                // height: 30,
+                width: screenWidth,
+                color: primaryColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    appTextGiloryBlack(
+                        textString: 'Social Profile', fontSize: 24),
+                    CircleAvatar(
+                      child: IconButton(
+                          onPressed: () {
+                            AppNavigator.off();
+                          },
+                          icon: const Icon(
+                            Icons.close,
+                            color: primaryColor,
+                          )),
+                    )
+                  ],
+                ),
               ),
               verticalSpacer(space: 0.02),
-              appTextGiloryMedium(
-                  textString: "Youtube",
-                  fontSize: 16,
-                  fontweight: FontWeight.w600),
-              appTextField(
-                controler: youtubeControler,
-                onchange: (value) {},
-                removeBorder: true,
-                hintText: "Add Youtube  link",
-                keyBordType: TextInputType.text,
-                maxLiness: 1,
-                fieldvalivator: (value) => null,
+              Container(
+                height: screenHieght * 0.75,
+                padding: const EdgeInsets.all(2),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      appTextGiloryMedium(
+                          textString: 'Social Media', fontSize: 18),
+                      Wrap(
+                        children: [
+                          for (int i = 0; i < 8; i++)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (selectedIcons.contains(i)) {
+                                    selectedIcons.remove(i);
+                                  } else {
+                                    selectedIcons.add(i);
+                                  }
+                                });
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                color: selectedIcons.contains(i)
+                                    ? primaryColor
+                                    : Colors.white,
+                                child: SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Center(
+                                        child: SizedBox(
+                                            width: 28,
+                                            child: Image.asset(
+                                                socialIcons[i].imagePath)))),
+                              ),
+                            )
+                        ],
+                      ),
+                      verticalSpacer(space: 0.02),
+                      appTextGiloryMedium(
+                          textString: 'Messaging and Communication',
+                          fontSize: 18),
+                      Wrap(
+                        children: [
+                          for (int i = 8; i < 12; i++)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (selectedIcons.contains(i)) {
+                                    selectedIcons.remove(i);
+                                  } else {
+                                    selectedIcons.add(i);
+                                  }
+                                });
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                color: selectedIcons.contains(i)
+                                    ? primaryColor
+                                    : Colors.white,
+                                child: SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Center(
+                                        child: SizedBox(
+                                            width: 28,
+                                            child: Image.asset(
+                                                socialIcons[i].imagePath)))),
+                              ),
+                            )
+                        ],
+                      ),
+                      verticalSpacer(space: 0.02),
+                      appTextGiloryMedium(
+                          textString: 'Professional Networking', fontSize: 18),
+                      Wrap(
+                        children: [
+                          for (int i = 12; i < 14; i++)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (selectedIcons.contains(i)) {
+                                    selectedIcons.remove(i);
+                                  } else {
+                                    selectedIcons.add(i);
+                                  }
+                                });
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                color: selectedIcons.contains(i)
+                                    ? primaryColor
+                                    : Colors.white,
+                                child: SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Center(
+                                        child: SizedBox(
+                                            width: 28,
+                                            child: Image.asset(
+                                                socialIcons[i].imagePath)))),
+                              ),
+                            ),
+                        ],
+                      ),
+                      verticalSpacer(space: 0.02),
+                      appTextGiloryMedium(
+                          textString: 'Video Sharing / Streaming',
+                          fontSize: 18),
+                      Wrap(
+                        children: [
+                          for (int i = 14; i < 17; i++)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (selectedIcons.contains(i)) {
+                                    selectedIcons.remove(i);
+                                  } else {
+                                    selectedIcons.add(i);
+                                  }
+                                });
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                color: selectedIcons.contains(i)
+                                    ? primaryColor
+                                    : Colors.white,
+                                child: SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Center(
+                                        child: SizedBox(
+                                            width: 28,
+                                            child: Image.asset(
+                                                socialIcons[i].imagePath)))),
+                              ),
+                            ),
+                        ],
+                      ),
+                      verticalSpacer(space: 0.02),
+                      appTextGiloryMedium(
+                          textString: 'Music Streaming', fontSize: 18),
+                      Wrap(
+                        children: [
+                          for (int i = 17; i < 21; i++)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (selectedIcons.contains(i)) {
+                                    selectedIcons.remove(i);
+                                  } else {
+                                    selectedIcons.add(i);
+                                  }
+                                });
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                color: selectedIcons.contains(i)
+                                    ? primaryColor
+                                    : Colors.white,
+                                child: SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Center(
+                                        child: SizedBox(
+                                            width: 28,
+                                            child: Image.asset(
+                                                socialIcons[i].imagePath)))),
+                              ),
+                            ),
+                        ],
+                      ),
+                      verticalSpacer(space: 0.02),
+                      appTextGiloryMedium(
+                          textString: 'Gaming Platforms', fontSize: 18),
+                      Wrap(
+                        children: [
+                          for (int i = 21; i < 25; i++)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (selectedIcons.contains(i)) {
+                                    selectedIcons.remove(i);
+                                  } else {
+                                    selectedIcons.add(i);
+                                  }
+                                });
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                color: selectedIcons.contains(i)
+                                    ? primaryColor
+                                    : Colors.white,
+                                child: SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Center(
+                                        child: SizedBox(
+                                            width: 28,
+                                            child: Image.asset(
+                                                socialIcons[i].imagePath)))),
+                              ),
+                            ),
+                        ],
+                      ),
+                      verticalSpacer(space: 0.02),
+                      appTextGiloryMedium(
+                          textString: 'Creative and Art Platforms',
+                          fontSize: 18),
+                      Wrap(
+                        children: [
+                          for (int i = 25; i < 30; i++)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (selectedIcons.contains(i)) {
+                                    selectedIcons.remove(i);
+                                  } else {
+                                    selectedIcons.add(i);
+                                  }
+                                });
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                color: selectedIcons.contains(i)
+                                    ? primaryColor
+                                    : Colors.white,
+                                child: SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Center(
+                                        child: SizedBox(
+                                            width: 28,
+                                            child: Image.asset(
+                                                socialIcons[i].imagePath)))),
+                              ),
+                            ),
+                        ],
+                      ),
+                      verticalSpacer(space: 0.02),
+                      appTextGiloryMedium(
+                          textString: 'Coding and Development', fontSize: 18),
+                      Wrap(
+                        children: [
+                          for (int i = 30; i < 37; i++)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (selectedIcons.contains(i)) {
+                                    selectedIcons.remove(i);
+                                  } else {
+                                    selectedIcons.add(i);
+                                  }
+                                });
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                color: selectedIcons.contains(i)
+                                    ? primaryColor
+                                    : Colors.white,
+                                child: SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Center(
+                                        child: SizedBox(
+                                            width: 28,
+                                            child: Image.asset(
+                                                socialIcons[i].imagePath)))),
+                              ),
+                            ),
+                        ],
+                      ),
+                      //=============================
+                      verticalSpacer(space: 0.04),
+                      appButton(
+                        buttonText: "Save",
+                        fontSize: 22,
+                        ontapfunction: () async {
+                          updateUserData(data: {'social_links': selectedIcons});
+                          AppNavigator.off();
+                        },
+                      )
+                    ],
+                  ),
+                ),
               ),
-              verticalSpacer(space: 0.02),
-              appTextGiloryMedium(
-                  textString: "TikTok",
-                  fontSize: 16,
-                  fontweight: FontWeight.w600),
-              appTextField(
-                controler: tictokControler,
-                onchange: (value) {},
-                removeBorder: true,
-                hintText: "Add TikTok profile link",
-                keyBordType: TextInputType.text,
-                maxLiness: 1,
-                fieldvalivator: (value) => null,
-              ),
-              verticalSpacer(space: 0.04),
-              appButton(
-                  buttonText: "Confirm",
-                  ontapfunction: () async {
-                    QuickAlert.show(
-                        context: context,
-                        type: QuickAlertType.loading,
-                        backgroundColor: transparent,
-                        headerBackgroundColor: transparent);
-                    await FirebaseFirestore.instance
-                        .collection("users")
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                        .update({
-                      'social_links': [
-                        {
-                          'youtube': youtubeControler.text,
-                          'instagram': instgramControler.text,
-                          'snapchat': snapControler.text,
-                          'tictok': tictokControler.text,
-                        }
-                      ]
-                    }).whenComplete(() {
-                      AppNavigator.off();
-                    }).onError((error, stackTrace) {
-                      snaki(msg: "Some thing rong Try again later");
-                    });
-                    AppNavigator.off();
-                  },
-                  buttonColor: Colors.white,
-                  textColor: appBlackColor)
             ],
           ),
         ),

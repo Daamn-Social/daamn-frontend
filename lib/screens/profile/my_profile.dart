@@ -212,7 +212,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     borderRadius: BorderRadius.circular(16),
                                   ),
                                   child: appTextGiloryBlack(
-                                    textString: userData['interests'][index],
+                                    textString:
+                                        userData['interests'][index].toString(),
                                   ),
                                 ),
                               ),
@@ -316,7 +317,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SocialMediaDialoge(
-                                    socalMeia: userData['social_links'][0],
+                                    selected: userData['social_links'],
                                   );
                                 },
                               );
@@ -328,40 +329,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                     verticalSpacer(space: 0.01),
-                    SizedBox(
-                        width: w,
-                        child: Row(
-                          children: [
-                            socialicon(
-                              icon: snapchat,
-                              ontap: () {
-                                urlLauncherCustom(
-                                    userData['social_links'][0]['snapchat']);
-                              },
+                    Wrap(
+                      children: [
+                        for (int i = 0; i < socialIcons.length; i++) ...{
+                          if (userData['social_links'].contains(i)) ...{
+                            GestureDetector(
+                              onTap: () {},
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                color: Colors.white,
+                                child: SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Center(
+                                        child: SizedBox(
+                                            width: 28,
+                                            child: Image.asset(
+                                                socialIcons[i].imagePath)))),
+                              ),
                             ),
-                            socialicon(
-                              icon: instagram,
-                              ontap: () {
-                                urlLauncherCustom(
-                                    userData['social_links'][0]['instagram']);
-                              },
-                            ),
-                            socialicon(
-                              icon: tictok,
-                              ontap: () {
-                                urlLauncherCustom(
-                                    userData['social_links'][0]['tictok']);
-                              },
-                            ),
-                            socialicon(
-                              icon: youtube,
-                              ontap: () async {
-                                urlLauncherCustom(
-                                    userData['social_links'][0]['youtube']);
-                              },
-                            ),
-                          ],
-                        )),
+                          }
+                        }
+                      ],
+                    ),
                     verticalSpacer(space: 0.01),
                     appDivider(),
                     verticalSpacer(space: 0.15),
