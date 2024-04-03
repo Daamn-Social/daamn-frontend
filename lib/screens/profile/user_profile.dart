@@ -2,6 +2,7 @@
 
 import 'package:daamn/constant/exports.dart';
 import 'package:daamn/screens/chat/chat_screen.dart';
+import 'package:daamn/screens/profile/widgets/like_badge.dart';
 
 class UserProfileScreen extends StatefulWidget {
   final String friendID;
@@ -55,27 +56,56 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // verticalSpacer(space: 0.04),
-                          Container(
-                            width: w,
-                            height: h * 0.3,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: primaryColor),
-                              // boxShadow: [
-                              //   // BoxShadow(
-                              //   //   color: primaryColor.withOpacity(0.5),
-                              //   //   spreadRadius: 15,
-                              //   //   blurRadius: 16,
-                              //   //   offset: Offset(3, 3), // changes position of shadow
-                              //   // ),
-                              // ],
-                            ),
-                            child: userData!['image'] == null
-                                ? const Icon(Icons.account_circle)
-                                : appCacheNetworkImageWidget(
-                                    imgIRL: userData!['image'],
-                                  ),
+                          Row(
+                            children: [
+                              Container(
+                                width: w * 0.5,
+                                height: h * 0.3,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                  boxShadow: customShadow,
+                                  border: Border.all(color: primaryColor),
+                                ),
+                                child: userData!['image'] == null
+                                    ? const Icon(Icons.account_circle)
+                                    : appCacheNetworkImageWidget(
+                                        imgIRL: userData!['image'],
+                                      ),
+                              ),
+                              SizedBox(
+                                width: w * 0.4,
+                                height: h * 0.3,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    verticalSpacer(space: 0.07),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        likeBadge(
+                                            icon: 'assets/icon/hand.png',
+                                            txt: "85%"),
+                                        horizontalSpacer(space: 0.03),
+                                        likeBadge(
+                                            icon: 'assets/icon/star.png',
+                                            txt: "23k"),
+                                      ],
+                                    ),
+                                    verticalSpacer(space: 0.02),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        likeBadge(
+                                            icon: 'assets/icon/eyes.png',
+                                            txt: "5k"),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
                           ),
                           verticalSpacer(space: 0.02),
                           SizedBox(
@@ -108,8 +138,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.all(8),
-                                    decoration: const BoxDecoration(
+                                    decoration: BoxDecoration(
                                         color: primaryColor,
+                                        gradient: primaryGradiant,
                                         shape: BoxShape.circle),
                                     width: 50,
                                     child: Center(
@@ -256,23 +287,30 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               fontSize: 18,
                               fontweight: FontWeight.w400),
                           verticalSpacer(space: 0.01),
-                          SizedBox(
-                              width: w,
-                              child: Row(
-                                children: [
-                                  socialicon(
-                                    icon: snapchat,
-                                    ontap: () {},
+                          Wrap(
+                            children: [
+                              for (int i = 0; i < socialIcons.length; i++) ...{
+                                if (userData!['social_links'].contains(i)) ...{
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Card(
+                                      clipBehavior: Clip.antiAlias,
+                                      color: Colors.white,
+                                      child: SizedBox(
+                                          width: 50,
+                                          height: 50,
+                                          child: Center(
+                                              child: SizedBox(
+                                                  width: 28,
+                                                  child: Image.asset(
+                                                      socialIcons[i]
+                                                          .imagePath)))),
+                                    ),
                                   ),
-                                  socialicon(icon: instagram),
-                                  socialicon(icon: tictok),
-                                  socialicon(icon: youtube),
-                                  // appTextGiloryMedium(
-                                  //     textString: userData!['social_links'][0]
-                                  //             ['youtube']
-                                  //         .toString())
-                                ],
-                              )),
+                                }
+                              }
+                            ],
+                          ),
                           verticalSpacer(space: 0.01),
                           appDivider(),
                           verticalSpacer(space: 0.15),

@@ -99,6 +99,18 @@ List<SocialIcon> socialIcons = [
   SocialIcon(name: 'code5', imagePath: 'assets/icon/social/35.png'),
   SocialIcon(name: 'code6', imagePath: 'assets/icon/social/36.png'),
   SocialIcon(name: 'code7', imagePath: 'assets/icon/social/37.png'),
+  //----------------------------------------------------------------
+  SocialIcon(name: 'h1', imagePath: 'assets/icon/social/38.png'),
+  SocialIcon(name: 'h2', imagePath: 'assets/icon/social/49.png'),
+  SocialIcon(name: 'h3', imagePath: 'assets/icon/social/40.png'),
+  //----------------------------------------------------------------
+  SocialIcon(name: 'te1', imagePath: 'assets/icon/social/41.png'),
+  SocialIcon(name: 'te2', imagePath: 'assets/icon/social/42.png'),
+  SocialIcon(name: 'te3', imagePath: 'assets/icon/social/43.png'),
+  //----------------------------------------------------------------
+  SocialIcon(name: 'f1', imagePath: 'assets/icon/social/44.png'),
+  SocialIcon(name: 'f2', imagePath: 'assets/icon/social/45.png'),
+  SocialIcon(name: 'f13', imagePath: 'assets/icon/social/46.png'),
 ];
 
 String? getSocialIconPath(String name) {

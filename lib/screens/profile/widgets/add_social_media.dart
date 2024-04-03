@@ -348,6 +348,105 @@ class _UserprofileDialogeState extends State<SocialMediaDialoge> {
                             ),
                         ],
                       ),
+                      verticalSpacer(space: 0.02),
+                      appTextGiloryMedium(
+                          textString: 'Health and Fitness', fontSize: 18),
+                      Wrap(
+                        children: [
+                          for (int i = 37; i < 40; i++)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (selectedIcons.contains(i)) {
+                                    selectedIcons.remove(i);
+                                  } else {
+                                    selectedIcons.add(i);
+                                  }
+                                });
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                color: selectedIcons.contains(i)
+                                    ? primaryColor
+                                    : Colors.white,
+                                child: SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Center(
+                                        child: SizedBox(
+                                            width: 28,
+                                            child: Image.asset(
+                                                socialIcons[i].imagePath)))),
+                              ),
+                            ),
+                        ],
+                      ),
+                      verticalSpacer(space: 0.02),
+                      appTextGiloryMedium(
+                          textString: 'Travel and Experiences', fontSize: 18),
+                      Wrap(
+                        children: [
+                          for (int i = 40; i < 43; i++)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (selectedIcons.contains(i)) {
+                                    selectedIcons.remove(i);
+                                  } else {
+                                    selectedIcons.add(i);
+                                  }
+                                });
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                color: selectedIcons.contains(i)
+                                    ? primaryColor
+                                    : Colors.white,
+                                child: SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Center(
+                                        child: SizedBox(
+                                            width: 28,
+                                            child: Image.asset(
+                                                socialIcons[i].imagePath)))),
+                              ),
+                            ),
+                        ],
+                      ),
+                      verticalSpacer(space: 0.02),
+                      appTextGiloryMedium(
+                          textString: 'Finance and Investment', fontSize: 18),
+                      Wrap(
+                        children: [
+                          for (int i = 43; i < 46; i++)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (selectedIcons.contains(i)) {
+                                    selectedIcons.remove(i);
+                                  } else {
+                                    selectedIcons.add(i);
+                                  }
+                                });
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                color: selectedIcons.contains(i)
+                                    ? primaryColor
+                                    : Colors.white,
+                                child: SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Center(
+                                        child: SizedBox(
+                                            width: 28,
+                                            child: Image.asset(
+                                                socialIcons[i].imagePath)))),
+                              ),
+                            ),
+                        ],
+                      ),
                       //=============================
                       verticalSpacer(space: 0.04),
                       appButton(

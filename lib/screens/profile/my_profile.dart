@@ -4,6 +4,7 @@ import 'package:daamn/constant/exports.dart';
 import 'package:daamn/providers/streams_provider.dart';
 import 'package:daamn/screens/profile/widgets/add_social_media.dart';
 import 'package:daamn/screens/profile/widgets/interest_dialoge.dart';
+import 'package:daamn/screens/profile/widgets/like_badge.dart';
 import 'package:daamn/screens/profile/widgets/user_image_list.dart';
 import 'package:daamn/screens/profile/widgets/user_profile_dialoge.dart';
 import 'package:daamn/screens/settings/settings.dart';
@@ -63,16 +64,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: w,
-                      height: h * 0.3,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: primaryColor),
-                      ),
-                      child: Stack(
-                        children: [
-                          SizedBox(
+                    Row(
+                      children: [
+                        Container(
+                          width: w * 0.5,
+                          height: h * 0.3,
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(
+                            boxShadow: customShadow,
+                            border: Border.all(color: primaryColor),
+                          ),
+                          child: SizedBox(
                             width: w,
                             height: h * 0.3,
                             child: userData!['image'] == null
@@ -81,20 +83,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     imgIRL: userData['image'],
                                   ),
                           ),
-                          Positioned(
-                              top: 10,
-                              right: 10,
-                              child: GestureDetector(
-                                onTap: () {
-                                  AppNavigator.to(const SettingsScreen());
-                                },
-                                child: const CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: ImageIcon(AssetImage(nav1)),
-                                ),
-                              ))
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          width: w * 0.4,
+                          height: h * 0.3,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      AppNavigator.to(const SettingsScreen());
+                                    },
+                                    child: const CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      child: ImageIcon(AssetImage(nav1)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              verticalSpacer(space: 0.03),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  likeBadge(
+                                      icon: 'assets/icon/hand.png', txt: "85%"),
+                                  horizontalSpacer(space: 0.03),
+                                  likeBadge(
+                                      icon: 'assets/icon/star.png', txt: "23k"),
+                                ],
+                              ),
+                              verticalSpacer(space: 0.02),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  likeBadge(
+                                      icon: 'assets/icon/eyes.png', txt: "5k"),
+                                ],
+                              )
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                     verticalSpacer(space: 0.02),
                     SizedBox(
