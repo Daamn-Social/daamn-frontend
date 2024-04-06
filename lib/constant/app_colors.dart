@@ -42,6 +42,11 @@ LinearGradient primaryGradiant = const LinearGradient(
   end: Alignment.bottomCenter,
   colors: [Color(0xff924BF4), Color(0xff400099)],
 );
+LinearGradient fullwhiteGradiant = const LinearGradient(
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+  colors: [Colors.white, Colors.white],
+);
 LinearGradient whiteGradiant = LinearGradient(
   begin: Alignment.topCenter,
   end: Alignment.bottomCenter,

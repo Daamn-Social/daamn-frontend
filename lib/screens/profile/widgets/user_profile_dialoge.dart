@@ -3,7 +3,9 @@ import 'dart:ui';
 
 import 'package:daamn/providers/shared/image_picker_provider.dart';
 import 'package:daamn/services/firebase.dart';
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../constant/exports.dart';
 
@@ -52,7 +54,13 @@ class _UserprofileDialogeState extends State<UserprofileDialoge> {
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             color: appBlackColor.withOpacity(0.4),
-            //gradient: primaryGradiant,
+            border: const GradientBoxBorder(
+              gradient: LinearGradient(
+                  colors: [primaryColor, Colors.black],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter),
+              width: 1,
+            ),
             borderRadius: BorderRadius.circular(16.0),
           ),
           child: SingleChildScrollView(
@@ -62,9 +70,8 @@ class _UserprofileDialogeState extends State<UserprofileDialoge> {
               children: [
                 Container(
                   padding: const EdgeInsets.all(10),
-                  // height: 30,
                   width: screenWidth,
-                  color: primaryColor,
+                  decoration: BoxDecoration(gradient: primaryGradiant),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -179,6 +186,7 @@ class _UserprofileDialogeState extends State<UserprofileDialoge> {
                               type: QuickAlertType.loading,
                               backgroundColor: transparent,
                               headerBackgroundColor: transparent);
+                          final prefs = await SharedPreferences.getInstance();
                           File? selectedImage = readmage.postimage;
                           String? imageUrl;
                           if (selectedImage != null) {
@@ -192,7 +200,10 @@ class _UserprofileDialogeState extends State<UserprofileDialoge> {
                             'image': imageUrl ?? widget.img,
                             'userBio': bioControler.text,
                             'name': nameControler.text,
-                          }).whenComplete(() {
+                          }).whenComplete(() async {
+                            await prefs.setString('name', nameControler.text);
+                            await prefs.setString(
+                                'image', imageUrl ?? widget.img!);
                             AppNavigator.off();
                             readmage.clean();
                           }).onError((error, stackTrace) {

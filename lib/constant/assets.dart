@@ -101,7 +101,7 @@ List<SocialIcon> socialIcons = [
   SocialIcon(name: 'code7', imagePath: 'assets/icon/social/37.png'),
   //----------------------------------------------------------------
   SocialIcon(name: 'h1', imagePath: 'assets/icon/social/38.png'),
-  SocialIcon(name: 'h2', imagePath: 'assets/icon/social/49.png'),
+  SocialIcon(name: 'h2', imagePath: 'assets/icon/social/39.png'),
   SocialIcon(name: 'h3', imagePath: 'assets/icon/social/40.png'),
   //----------------------------------------------------------------
   SocialIcon(name: 'te1', imagePath: 'assets/icon/social/41.png'),
@@ -110,7 +110,15 @@ List<SocialIcon> socialIcons = [
   //----------------------------------------------------------------
   SocialIcon(name: 'f1', imagePath: 'assets/icon/social/44.png'),
   SocialIcon(name: 'f2', imagePath: 'assets/icon/social/45.png'),
-  SocialIcon(name: 'f13', imagePath: 'assets/icon/social/46.png'),
+  SocialIcon(name: 'f3', imagePath: 'assets/icon/social/46.png'),
+  //----------------------------------------------------------------
+  SocialIcon(name: 'dating1', imagePath: 'assets/icon/social/47.png'),
+  SocialIcon(name: 'dating2', imagePath: 'assets/icon/social/48.png'),
+  SocialIcon(name: 'dating3', imagePath: 'assets/icon/social/49.png'),
+  //----------------------------------------------------------------
+  SocialIcon(name: 'ecomerce1', imagePath: 'assets/icon/social/50.png'),
+  SocialIcon(name: 'ecomerce2', imagePath: 'assets/icon/social/51.png'),
+  SocialIcon(name: 'ecomerce3', imagePath: 'assets/icon/social/52.png'),
 ];
 
 String? getSocialIconPath(String name) {

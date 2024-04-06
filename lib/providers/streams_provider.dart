@@ -46,11 +46,22 @@ class DataStreamProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  addUserInterest({required String interstTxt}) async {
-    List<dynamic> userIntrestsss = currentUserData!['interests'];
-    userIntrestsss.add(interstTxt);
-    updateUserData(data: {'interests': userIntrestsss});
-    getSurrentUserdata();
+  Future<void> addUserInterest({required String interestTxt}) async {
+    List<dynamic> userInterests = currentUserData!['interests'];
+
+    // Check if the interest already exists
+    if (userInterests.contains(interestTxt)) {
+      return; // Interest already exists, do nothing
+    }
+
+    // Remove any existing duplicate interests
+    userInterests.removeWhere((interest) => interest == interestTxt);
+
+    // Add the new interest
+    userInterests.add(interestTxt);
+
+    updateUserData(data: {'interests': userInterests});
+    await getSurrentUserdata();
     notifyListeners();
   }
 }

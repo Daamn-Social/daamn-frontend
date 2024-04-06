@@ -1,5 +1,5 @@
 import 'package:daamn/providers/streams_provider.dart';
-
+import 'package:gradient_borders/gradient_borders.dart';
 import '../../../constant/exports.dart';
 import 'dart:ui';
 
@@ -45,6 +45,13 @@ class _UserprofileDialogeState extends State<SocialMediaDialoge> {
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             color: appBlackColor.withOpacity(0.4),
+            border: const GradientBoxBorder(
+              gradient: LinearGradient(
+                  colors: [primaryColor, Colors.black],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter),
+              width: 1,
+            ),
             //gradient: primaryGradiant,
             borderRadius: BorderRadius.circular(16.0),
           ),
@@ -54,7 +61,8 @@ class _UserprofileDialogeState extends State<SocialMediaDialoge> {
                 padding: const EdgeInsets.all(10),
                 // height: 30,
                 width: screenWidth,
-                color: primaryColor,
+                decoration: BoxDecoration(gradient: primaryGradiant),
+
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -75,8 +83,8 @@ class _UserprofileDialogeState extends State<SocialMediaDialoge> {
               ),
               verticalSpacer(space: 0.02),
               Container(
-                height: screenHieght * 0.75,
-                padding: const EdgeInsets.all(2),
+                height: screenHieght * 0.66,
+                padding: const EdgeInsets.all(10),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,9 +110,13 @@ class _UserprofileDialogeState extends State<SocialMediaDialoge> {
                                 color: selectedIcons.contains(i)
                                     ? primaryColor
                                     : Colors.white,
-                                child: SizedBox(
+                                child: Container(
                                     width: 50,
                                     height: 50,
+                                    decoration: BoxDecoration(
+                                        gradient: selectedIcons.contains(i)
+                                            ? primaryGradiant
+                                            : fullwhiteGradiant),
                                     child: Center(
                                         child: SizedBox(
                                             width: 28,
@@ -117,6 +129,7 @@ class _UserprofileDialogeState extends State<SocialMediaDialoge> {
                       verticalSpacer(space: 0.02),
                       appTextGiloryMedium(
                           textString: 'Messaging and Communication',
+                          isCenter: false,
                           fontSize: 18),
                       Wrap(
                         children: [
@@ -136,9 +149,13 @@ class _UserprofileDialogeState extends State<SocialMediaDialoge> {
                                 color: selectedIcons.contains(i)
                                     ? primaryColor
                                     : Colors.white,
-                                child: SizedBox(
+                                child: Container(
                                     width: 50,
                                     height: 50,
+                                    decoration: BoxDecoration(
+                                        gradient: selectedIcons.contains(i)
+                                            ? primaryGradiant
+                                            : fullwhiteGradiant),
                                     child: Center(
                                         child: SizedBox(
                                             width: 28,
@@ -169,9 +186,13 @@ class _UserprofileDialogeState extends State<SocialMediaDialoge> {
                                 color: selectedIcons.contains(i)
                                     ? primaryColor
                                     : Colors.white,
-                                child: SizedBox(
+                                child: Container(
                                     width: 50,
                                     height: 50,
+                                    decoration: BoxDecoration(
+                                        gradient: selectedIcons.contains(i)
+                                            ? primaryGradiant
+                                            : fullwhiteGradiant),
                                     child: Center(
                                         child: SizedBox(
                                             width: 28,
@@ -203,9 +224,13 @@ class _UserprofileDialogeState extends State<SocialMediaDialoge> {
                                 color: selectedIcons.contains(i)
                                     ? primaryColor
                                     : Colors.white,
-                                child: SizedBox(
+                                child: Container(
                                     width: 50,
                                     height: 50,
+                                    decoration: BoxDecoration(
+                                        gradient: selectedIcons.contains(i)
+                                            ? primaryGradiant
+                                            : fullwhiteGradiant),
                                     child: Center(
                                         child: SizedBox(
                                             width: 28,
@@ -236,9 +261,13 @@ class _UserprofileDialogeState extends State<SocialMediaDialoge> {
                                 color: selectedIcons.contains(i)
                                     ? primaryColor
                                     : Colors.white,
-                                child: SizedBox(
+                                child: Container(
                                     width: 50,
                                     height: 50,
+                                    decoration: BoxDecoration(
+                                        gradient: selectedIcons.contains(i)
+                                            ? primaryGradiant
+                                            : fullwhiteGradiant),
                                     child: Center(
                                         child: SizedBox(
                                             width: 28,
@@ -269,9 +298,13 @@ class _UserprofileDialogeState extends State<SocialMediaDialoge> {
                                 color: selectedIcons.contains(i)
                                     ? primaryColor
                                     : Colors.white,
-                                child: SizedBox(
+                                child: Container(
                                     width: 50,
                                     height: 50,
+                                    decoration: BoxDecoration(
+                                        gradient: selectedIcons.contains(i)
+                                            ? primaryGradiant
+                                            : fullwhiteGradiant),
                                     child: Center(
                                         child: SizedBox(
                                             width: 28,
@@ -303,9 +336,13 @@ class _UserprofileDialogeState extends State<SocialMediaDialoge> {
                                 color: selectedIcons.contains(i)
                                     ? primaryColor
                                     : Colors.white,
-                                child: SizedBox(
+                                child: Container(
                                     width: 50,
                                     height: 50,
+                                    decoration: BoxDecoration(
+                                        gradient: selectedIcons.contains(i)
+                                            ? primaryGradiant
+                                            : fullwhiteGradiant),
                                     child: Center(
                                         child: SizedBox(
                                             width: 28,
@@ -336,9 +373,13 @@ class _UserprofileDialogeState extends State<SocialMediaDialoge> {
                                 color: selectedIcons.contains(i)
                                     ? primaryColor
                                     : Colors.white,
-                                child: SizedBox(
+                                child: Container(
                                     width: 50,
                                     height: 50,
+                                    decoration: BoxDecoration(
+                                        gradient: selectedIcons.contains(i)
+                                            ? primaryGradiant
+                                            : fullwhiteGradiant),
                                     child: Center(
                                         child: SizedBox(
                                             width: 28,
@@ -369,9 +410,13 @@ class _UserprofileDialogeState extends State<SocialMediaDialoge> {
                                 color: selectedIcons.contains(i)
                                     ? primaryColor
                                     : Colors.white,
-                                child: SizedBox(
+                                child: Container(
                                     width: 50,
                                     height: 50,
+                                    decoration: BoxDecoration(
+                                        gradient: selectedIcons.contains(i)
+                                            ? primaryGradiant
+                                            : fullwhiteGradiant),
                                     child: Center(
                                         child: SizedBox(
                                             width: 28,
@@ -402,9 +447,13 @@ class _UserprofileDialogeState extends State<SocialMediaDialoge> {
                                 color: selectedIcons.contains(i)
                                     ? primaryColor
                                     : Colors.white,
-                                child: SizedBox(
+                                child: Container(
                                     width: 50,
                                     height: 50,
+                                    decoration: BoxDecoration(
+                                        gradient: selectedIcons.contains(i)
+                                            ? primaryGradiant
+                                            : fullwhiteGradiant),
                                     child: Center(
                                         child: SizedBox(
                                             width: 28,
@@ -435,9 +484,89 @@ class _UserprofileDialogeState extends State<SocialMediaDialoge> {
                                 color: selectedIcons.contains(i)
                                     ? primaryColor
                                     : Colors.white,
-                                child: SizedBox(
+                                child: Container(
                                     width: 50,
                                     height: 50,
+                                    decoration: BoxDecoration(
+                                        gradient: selectedIcons.contains(i)
+                                            ? primaryGradiant
+                                            : fullwhiteGradiant),
+                                    child: Center(
+                                        child: SizedBox(
+                                            width: 28,
+                                            child: Image.asset(
+                                                socialIcons[i].imagePath)))),
+                              ),
+                            ),
+                        ],
+                      ),
+                      verticalSpacer(space: 0.02),
+                      appTextGiloryMedium(
+                          textString: 'Dating and Relationships', fontSize: 18),
+                      Wrap(
+                        children: [
+                          for (int i = 46; i < 49; i++)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (selectedIcons.contains(i)) {
+                                    selectedIcons.remove(i);
+                                  } else {
+                                    selectedIcons.add(i);
+                                  }
+                                });
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                color: selectedIcons.contains(i)
+                                    ? primaryColor
+                                    : Colors.white,
+                                child: Container(
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        gradient: selectedIcons.contains(i)
+                                            ? primaryGradiant
+                                            : fullwhiteGradiant),
+                                    child: Center(
+                                        child: SizedBox(
+                                            width: 28,
+                                            child: Image.asset(
+                                                socialIcons[i].imagePath)))),
+                              ),
+                            ),
+                        ],
+                      ),
+                      verticalSpacer(space: 0.02),
+                      appTextGiloryMedium(
+                          textString: 'E-commerce and Marketplaces',
+                          isCenter: false,
+                          fontSize: 18),
+                      Wrap(
+                        children: [
+                          for (int i = 49; i < 52; i++)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  if (selectedIcons.contains(i)) {
+                                    selectedIcons.remove(i);
+                                  } else {
+                                    selectedIcons.add(i);
+                                  }
+                                });
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                color: selectedIcons.contains(i)
+                                    ? primaryColor
+                                    : Colors.white,
+                                child: Container(
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        gradient: selectedIcons.contains(i)
+                                            ? primaryGradiant
+                                            : fullwhiteGradiant),
                                     child: Center(
                                         child: SizedBox(
                                             width: 28,
@@ -448,19 +577,22 @@ class _UserprofileDialogeState extends State<SocialMediaDialoge> {
                         ],
                       ),
                       //=============================
-                      verticalSpacer(space: 0.04),
-                      appButton(
-                        buttonText: "Save",
-                        fontSize: 22,
-                        ontapfunction: () async {
-                          updateUserData(data: {'social_links': selectedIcons});
-                          AppNavigator.off();
-                        },
-                      )
                     ],
                   ),
                 ),
               ),
+              verticalSpacer(space: 0.04),
+              SizedBox(
+                width: screenWidth * 0.7,
+                child: appButton(
+                  buttonText: "Save",
+                  fontSize: 22,
+                  ontapfunction: () async {
+                    updateUserData(data: {'social_links': selectedIcons});
+                    AppNavigator.off();
+                  },
+                ),
+              )
             ],
           ),
         ),

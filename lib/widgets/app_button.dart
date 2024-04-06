@@ -8,29 +8,21 @@ Widget appButton(
     double? radius,
     double? fontSize}) {
   return Builder(builder: (context) {
-    return Container(
-      padding: const EdgeInsets.all(2),
-      decoration: BoxDecoration(
-        gradient: blackandWhiteGradiant,
-        boxShadow: customShadow,
-        // color: primaryColor.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(25),
-      ),
-      child: ElevatedButton(
-        style: ButtonStyle(
-          shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(radius ?? 25.0),
-            ),
-          ),
-          backgroundColor: buttonColor != null
-              ? MaterialStateProperty.all(buttonColor)
-              : MaterialStateProperty.all(
-                  primaryColor,
-                ),
+    return GestureDetector(
+      onTap: ontapfunction,
+      child: Container(
+        padding: const EdgeInsets.all(2),
+        decoration: BoxDecoration(
+          gradient: blackandWhiteGradiant,
+          boxShadow: customShadow,
+          // color: primaryColor.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(25),
         ),
-        onPressed: ontapfunction,
-        child: SizedBox(
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: primaryGradiant,
+            borderRadius: BorderRadius.circular(25),
+          ),
           width: MediaQuery.of(context).size.width,
           height: 50,
           child: Center(
@@ -38,7 +30,9 @@ Widget appButton(
               buttonText,
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: textColor ?? appWhiteColor, fontSize: fontSize ?? 14),
+                  color: textColor ?? appWhiteColor,
+                  fontSize: fontSize ?? 14,
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ),

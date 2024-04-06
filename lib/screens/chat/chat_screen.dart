@@ -399,8 +399,7 @@ class _ChatScreenState extends State<ChatScreen> {
     _textController.clear();
     ischatReply = false;
     setState(() {});
-    UserModel? userdataSaved =
-        await context.read<GoogleSignInProvider>().getUserData();
+    UserModel? userdataSaved = await getUserData();
     //----------------- savefor me
     await FirebaseFirestore.instance
         .collection('chatList')

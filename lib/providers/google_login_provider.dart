@@ -101,33 +101,33 @@ class GoogleSignInProvider extends ChangeNotifier {
         await FirebaseFirestore.instance.collection('users').doc(uid).get();
     return doc.exists;
   }
+}
 
-  Future<void> saveUserData(UserModel userModel) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('userId', FirebaseAuth.instance.currentUser!.uid);
-    await prefs.setString('name', userModel.name);
-    await prefs.setString('email', userModel.email);
-    await prefs.setString('image', userModel.image ?? '');
-    await prefs.setDouble('lng', userModel.lng);
-    await prefs.setDouble('lat', userModel.lat);
-    await prefs.setString('address', userModel.addres);
+Future<void> saveUserData(UserModel userModel) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('userId', FirebaseAuth.instance.currentUser!.uid);
+  await prefs.setString('name', userModel.name);
+  await prefs.setString('email', userModel.email);
+  await prefs.setString('image', userModel.image ?? '');
+  await prefs.setDouble('lng', userModel.lng);
+  await prefs.setDouble('lat', userModel.lat);
+  await prefs.setString('address', userModel.addres);
 
-    debugPrint("user data saved");
-  }
+  debugPrint("user data saved");
+}
 
-  Future<UserModel?> getUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getString('userId');
-    if (userId == null) return null;
+Future<UserModel?> getUserData() async {
+  final prefs = await SharedPreferences.getInstance();
+  final userId = prefs.getString('userId');
+  if (userId == null) return null;
 
-    return UserModel(
-      userId: userId,
-      name: prefs.getString('name') ?? '',
-      email: prefs.getString('email') ?? '',
-      image: prefs.getString('image') ?? '',
-      lng: prefs.getDouble('lng') ?? 0,
-      lat: prefs.getDouble('lat') ?? 0,
-      addres: prefs.getString('address') ?? '',
-    );
-  }
+  return UserModel(
+    userId: userId,
+    name: prefs.getString('name') ?? '',
+    email: prefs.getString('email') ?? '',
+    image: prefs.getString('image') ?? '',
+    lng: prefs.getDouble('lng') ?? 0,
+    lat: prefs.getDouble('lat') ?? 0,
+    addres: prefs.getString('address') ?? '',
+  );
 }

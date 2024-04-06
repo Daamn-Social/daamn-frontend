@@ -28,15 +28,7 @@ class ImageWithHero extends StatelessWidget {
                 child: Hero(
                     tag: heroTag,
                     child: appCacheNetworkImageWidget(
-                        imgIRL: imageUrl, imagefit: BoxFit.contain)
-
-                    // Image.network(
-                    //   imageUrl,
-                    //   fit: BoxFit.contain,
-                    //   height: MediaQuery.of(context).size.height,
-                    //   width: MediaQuery.of(context).size.width,
-                    // ),
-                    ),
+                        imgIRL: imageUrl, imageFit: BoxFit.contain)),
               ),
             ),
           );

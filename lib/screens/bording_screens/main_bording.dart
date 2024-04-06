@@ -95,7 +95,7 @@ class _MainBordingScreenState extends State<MainBordingScreen> {
                     }
 
                     context.read<DataStreamProvider>().addUserInterest(
-                        interstTxt: data['ans'][watchData.selectedAnswer]);
+                        interestTxt: data['ans'][watchData.selectedAnswer]);
                   },
                 );
               }

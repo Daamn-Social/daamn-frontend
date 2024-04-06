@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getCurrentUserDatadata() async {
-    userdata = await context.read<GoogleSignInProvider>().getUserData();
+    userdata = await getUserData();
     setState(() {});
   }
 
