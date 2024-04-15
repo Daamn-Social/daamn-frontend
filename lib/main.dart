@@ -12,6 +12,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FirebaseMessaging.onBackgroundMessage(_firebaseBackGroundMessages);
   await Firebase.initializeApp(
+    name: "daamn-28e40",
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
