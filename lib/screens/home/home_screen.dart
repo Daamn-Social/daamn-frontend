@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             user.id != userdata!.userId &&
                             calculateDistance(userdata!.lat, userdata!.lng,
                                     user['lat'], user['lng']) <
-                                100)
+                                1000)
                         .toList();
 
                     users.sort((a, b) {

@@ -2,6 +2,7 @@
 
 import 'package:daamn/constant/exports.dart';
 import 'package:daamn/screens/chat/chat_list.dart';
+import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -25,8 +26,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         body: Center(
           child: Container(
             decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(ellipseSetting), fit: BoxFit.cover)),
+              image: DecorationImage(
+                  image: AssetImage(ellipseSetting), fit: BoxFit.cover),
+            ),
             child: SizedBox(
               height: h,
               width: w * 0.9,
@@ -34,10 +36,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   verticalSpacer(space: 0.01),
-                  appTextGiloryBlack(
-                      textString: 'Settings',
-                      fontSize: 42,
-                      fontweight: FontWeight.w400),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          AppNavigator.off();
+                        },
+                        child: const Icon(
+                          Icons.arrow_back_ios,
+                          size: 30,
+                          color: appWhiteColor,
+                        ),
+                      ),
+                      horizontalSpacer(space: 0.02),
+                      appTextGiloryBlack(
+                          textString: 'Settings',
+                          fontSize: 42,
+                          fontweight: FontWeight.w400),
+                    ],
+                  ),
                   SizedBox(
                     child: appTextField(
                       controler: _searchController,
@@ -85,10 +102,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return [
       if (_searchQuery.isEmpty) ...[
         settingText(txt: 'Account'),
-        settingTile(
-          txt: "Profile",
-          ontap: () {},
-        ),
+
         settingTile(
           txt: "Privacy",
           ontap: () {},
@@ -157,7 +171,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
           txt: "Purchase History",
           ontap: () {},
         ),
-        verticalSpacer(space: 0.2),
+        verticalSpacer(space: 0.02),
+        settingTile(
+          txt: "Logout",
+          ontap: () async {
+            AppNavigator.toAndRemoveUntil(const LoginScreen());
+            await FirebaseAuth.instance.signOut();
+          },
+        ),
+        verticalSpacer(space: 0.1),
         // Add other default setting tiles here
       ] else ...[
         // Filtered setting tiles based on the search query
@@ -169,7 +191,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   List<Widget> _getFilteredSettings() {
     // Replace this with your actual list of settings to filter
     final List<String> settings = [
-      "Profile",
+      "Logout",
       "Privacy",
       "Security",
       "Notifications",
@@ -232,17 +254,19 @@ Widget settingTile({required String txt, void Function()? ontap}) {
       child: Row(
         children: [
           appTextGiloryMedium(
-            textString: txt,
-            isCenter: false,
-            fontSize: 20,
-            fontweight: FontWeight.w400,
-          ),
+              textString: txt,
+              isCenter: false,
+              fontSize: 20,
+              fontweight: FontWeight.w400,
+              color: txt == 'Logout' ? Colors.red : appWhiteColor),
           const Spacer(),
-          const Icon(
-            Icons.arrow_forward_ios,
-            color: Colors.white,
-            size: 20,
-          ),
+          txt == 'Logout'
+              ? const SizedBox()
+              : const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                  size: 20,
+                ),
         ],
       ),
     ),

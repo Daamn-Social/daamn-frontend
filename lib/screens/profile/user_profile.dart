@@ -3,6 +3,8 @@
 import 'package:daamn/constant/exports.dart';
 import 'package:daamn/screens/chat/chat_screen.dart';
 import 'package:daamn/screens/profile/widgets/like_badge.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class UserProfileScreen extends StatefulWidget {
   final String friendID;
@@ -58,19 +60,45 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         children: [
                           Row(
                             children: [
-                              Container(
+                              SizedBox(
                                 width: w * 0.5,
                                 height: h * 0.3,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: BoxDecoration(
-                                  boxShadow: customShadow,
-                                  border: Border.all(color: primaryColor),
-                                ),
-                                child: userData!['image'] == null
-                                    ? const Icon(Icons.account_circle)
-                                    : appCacheNetworkImageWidget(
-                                        imgIRL: userData!['image'],
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      width: w * 0.5,
+                                      height: h * 0.3,
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: BoxDecoration(
+                                        boxShadow: customShadow,
+                                        border: Border.all(color: primaryColor),
                                       ),
+                                      child: userData!['image'] == null
+                                          ? const Icon(Icons.account_circle)
+                                          : appCacheNetworkImageWidget(
+                                              imgIRL: userData!['image'],
+                                            ),
+                                    ),
+                                    Positioned(
+                                      top: 10,
+                                      left: 10,
+                                      child: CircleAvatar(
+                                        radius: 15,
+                                        backgroundColor: appWhiteColor,
+                                        child: Center(
+                                          child: IconButton(
+                                              onPressed: () {
+                                                AppNavigator.off();
+                                              },
+                                              icon: const Icon(
+                                                Icons.arrow_back_ios,
+                                                size: 15,
+                                              )),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                               SizedBox(
                                 width: w * 0.4,

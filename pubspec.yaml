@@ -39,12 +39,12 @@ dependencies:
   cached_network_image: ^3.3.1
   image_picker: ^1.0.7
   #google_fonts: ^6.2.0
-  firebase_auth: ^4.17.8
-  firebase_core: ^2.27.0
-  firebase_storage: ^11.6.9
-  cloud_firestore: ^4.15.8
-  google_sign_in: ^6.2.1
-  firebase_database: ^10.4.9
+  firebase_auth: 
+  firebase_core: 
+  firebase_storage: 
+  cloud_firestore: 
+  google_sign_in: 
+  firebase_database: 
   shared_preferences: ^2.2.2
   geocoding: ^3.0.0
   geolocator: ^11.0.0

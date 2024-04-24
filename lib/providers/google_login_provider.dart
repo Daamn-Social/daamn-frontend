@@ -5,7 +5,11 @@ import 'package:daamn/services/userlocation_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GoogleSignInProvider extends ChangeNotifier {
-  final googleSignIn = GoogleSignIn();
+  final googleSignIn = GoogleSignIn(
+    // The OAuth client id of your app. This is required.
+    clientId:
+        '1026215659783-7kkf3j4gv5g2m4pbt608n40q439esikp.apps.googleusercontent.com',
+  );
   GoogleSignInAccount? _user;
   GoogleSignInAccount get user => _user!;
 
@@ -40,11 +44,11 @@ class GoogleSignInProvider extends ChangeNotifier {
       if (uid != null) {
         UserLocation? userloc = await getUserLocation();
         DocumentSnapshot<Map<String, dynamic>> user;
-        if (await userExists(uid)) {
+        if (await userExists(uid) && userloc != null) {
           await FirebaseFirestore.instance.collection('users').doc(uid).update({
-            'lat': userloc != null ? userloc.lat : 000000,
-            'lng': userloc != null ? userloc.lng : 000000,
-            'addres': userloc != null ? userloc.address : "Dummy",
+            'lat': userloc.lat,
+            'lng': userloc.lng,
+            'addres': userloc.address,
           });
           user = await FirebaseFirestore.instance
               .collection('users')

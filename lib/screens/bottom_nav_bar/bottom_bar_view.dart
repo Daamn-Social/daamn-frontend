@@ -85,7 +85,7 @@ class _BottomBArViewState extends State<BottomBArView>
                     image: AssetImage(bgImage), fit: BoxFit.cover)),
             child: Column(
               children: [
-                SizedBox(height: h * 0.94, child: pages[mywatch.pageIndex]),
+                SizedBox(height: h * 0.90, child: pages[mywatch.pageIndex]),
               ],
             ),
           ),
